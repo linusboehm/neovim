@@ -14,6 +14,7 @@ Neovim config based on [LazyVim](https://github.com/LazyVim/LazyVim)
 - Neovim >= **0.8.0** (needs to be built with **LuaJIT**)
 - Git >= **2.19.0** (for partial clones support)
 - [lazygit](https://github.com/jesseduffield/lazygit#installation)
+- npm
 
 ## Getting Started
 

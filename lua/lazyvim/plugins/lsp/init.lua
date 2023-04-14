@@ -191,7 +191,7 @@ return {
       ensure_installed = {
         "stylua",
         "shfmt",
-        -- "flake8",
+        -- potentially add some rust, c++, python stuff here
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
