@@ -40,10 +40,20 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "saadparwaiz1/cmp_luasnip",
+      "rafamadriz/friendly-snippets",
     },
     opts = function()
-      local cmp = require("cmp")
-      return {
+        local cmp = require("cmp")
+        local snip_status_ok, luasnip = pcall(require, "luasnip")
+        if not snip_status_ok then
+          return
+        end
+
+        local check_backspace = function()
+           local col = vim.fn.col "." - 1
+           return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
+        end
+        return {
         completion = {
           completeopt = "menu,menuone,noinsert",
         },
@@ -64,13 +74,54 @@ return {
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
           }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expandable() then
+              luasnip.expand()
+            elseif luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            elseif check_backspace() then
+              fallback()
+            else
+              fallback()
+            end
+          end, {
+            "i",
+            "s",
+          }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, {
+            "i",
+            "s",
+          }),
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
-          { name = "buffer" },
+          {
+            name = "buffer",
+            -- source all buffers (not just current buffer)
+            option = {
+              get_bufnrs = function()
+                return vim.api.nvim_list_bufs()
+              end
+            }
+          },
           { name = "path" },
         }),
+        window = {
+          documentation = {
+            border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+          },
+        },
         formatting = {
           format = function(_, item)
             local icons = require("lazyvim.config").icons.kinds
@@ -81,9 +132,11 @@ return {
           end,
         },
         experimental = {
-          ghost_text = {
-            hl_group = "LspCodeLens",
-          },
+          ghost_text = false,
+          native_menu = false,
+          -- ghost_text = {
+          --   hl_group = "LspCodeLens",
+          -- },
         },
       }
     end,

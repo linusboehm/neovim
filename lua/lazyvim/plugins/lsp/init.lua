@@ -25,13 +25,13 @@ return {
         severity_sort = true,
       },
       -- Automatically format on save
-      autoformat = true,
+      autoformat = false,
       -- options for vim.lsp.buf.format
       -- `bufnr` and `filter` is handled by the LazyVim formatter,
       -- but can be also overridden when specified
       format = {
         formatting_options = nil,
-        timeout_ms = nil,
+        timeout_ms = 5000,
       },
       -- LSP Server Settings
       ---@type lspconfig.options
@@ -142,7 +142,12 @@ return {
           nls.builtins.diagnostics.fish,
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
-          -- nls.builtins.diagnostics.flake8,
+          nls.builtins.formatting.clang_format,
+          nls.builtins.formatting.black.with({ extra_args = { "--fast"}}),
+          nls.builtins.diagnostics.flake8,
+          nls.builtins.diagnostics.cpplint,
+          nls.builtins.formatting.cmake_format,
+          nls.builtins.diagnostics.cmake_lint,
         },
       }
     end,

@@ -28,6 +28,7 @@ function M.format()
 
   vim.lsp.buf.format(vim.tbl_deep_extend("force", {
     bufnr = buf,
+    timeout = 5000,
     filter = function(client)
       if have_nls then
         return client.name == "null-ls"
