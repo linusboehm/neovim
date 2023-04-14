@@ -1,35 +1,35 @@
 return {
-  -- Better `vim.notify()`
-  {
-    "rcarriga/nvim-notify",
-    keys = {
-      {
-        "<leader>un",
-        function()
-          require("notify").dismiss({ silent = true, pending = true })
-        end,
-        desc = "Delete all Notifications",
-      },
-    },
-    opts = {
-      timeout = 3000,
-      max_height = function()
-        return math.floor(vim.o.lines * 0.75)
-      end,
-      max_width = function()
-        return math.floor(vim.o.columns * 0.75)
-      end,
-    },
-    init = function()
-      -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("lazyvim.util")
-      if not Util.has("noice.nvim") then
-        Util.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
-      end
-    end,
-  },
+  -- -- Better `vim.notify()`
+  -- {
+  --   "rcarriga/nvim-notify",
+  --   keys = {
+  --     {
+  --       "<leader>un",
+  --       function()
+  --         require("notify").dismiss({ silent = true, pending = true })
+  --       end,
+  --       desc = "Delete all Notifications",
+  --     },
+  --   },
+  --   opts = {
+  --     timeout = 3000,
+  --     max_height = function()
+  --       return math.floor(vim.o.lines * 0.75)
+  --     end,
+  --     max_width = function()
+  --       return math.floor(vim.o.columns * 0.75)
+  --     end,
+  --   },
+  --   init = function()
+  --     -- when noice is not enabled, install notify on VeryLazy
+  --     local Util = require("lazyvim.util")
+  --     if not Util.has("noice.nvim") then
+  --       Util.on_very_lazy(function()
+  --         vim.notify = require("notify")
+  --       end)
+  --     end
+  --   end,
+  -- },
 
   -- better vim.ui
   {
@@ -60,7 +60,15 @@ return {
     opts = {
       options = {
         diagnostics = "nvim_lsp",
-        always_show_bufferline = false,
+        always_show_bufferline = true,
+        show_buffer_close_icons = false,
+        numbers = function(opts)
+          return string.format('%s', opts.raise(opts.id))
+        end,
+        separator_style = "thick",
+        tab_size = 5,
+        left_trunc_marker = '<',
+        right_trunc_marker = '..',
         diagnostics_indicator = function(_, _, diag)
           local icons = require("lazyvim.config").icons.diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. " " or "")
@@ -71,7 +79,7 @@ return {
           {
             filetype = "neo-tree",
             text = "Neo-tree",
-            highlight = "Directory",
+            -- highlight = "Directory",
             text_align = "left",
           },
         },
@@ -86,24 +94,43 @@ return {
     opts = function()
       local icons = require("lazyvim.config").icons
 
-      local function fg(name)
-        return function()
-          ---@type {foreground?:number}?
-          local hl = vim.api.nvim_get_hl_by_name(name, true)
-          return hl and hl.foreground and { fg = string.format("#%06x", hl.foreground) }
-        end
-      end
+      -- local function fg(name)
+      --   return function()
+      --     ---@type {foreground?:number}?
+      --     local hl = vim.api.nvim_get_hl_by_name(name, true)
+      --     return hl and hl.foreground and { fg = string.format("#%06x", hl.foreground) }
+      --   end
+      -- end
 
       return {
         options = {
+          icons_enabled = false,
           theme = "auto",
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "alpha" } },
         },
         sections = {
           lualine_a = { "mode" },
-          lualine_b = { "branch" },
-          lualine_c = {
+          lualine_b = {
+            {
+              function()
+                return "⎇ "
+              end,
+              separator = "",
+              padding = { left = 1, right = 0 },
+            },
+            {
+              "branch",
+              separator = "‖",
+            },
+            { "diff",
+              symbols = {
+                added = icons.git.added,
+                modified = icons.git.modified,
+                removed = icons.git.removed,
+              },
+              separator = "‖",
+            },
             {
               "diagnostics",
               symbols = {
@@ -113,50 +140,23 @@ return {
                 hint = icons.diagnostics.Hint,
               },
             },
-            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
-            -- stylua: ignore
+          },
+          lualine_c = {
             {
-              function() return require("nvim-navic").get_location() end,
-              cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
+              "filename",
+              path = 1,
+              symbols = { modified = icons.git.modified, readonly = "", unnamed = "" },
+              separator = "‖"
             },
           },
-          lualine_x = {
-            -- stylua: ignore
-            {
-              function() return "  " .. require("dap").status() end,
-              cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-              color = fg("Debug"),
-            },
-            -- stylua: ignore
-            {
-              function() return require("noice").api.status.command.get() end,
-              cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-              color = fg("Statement"),
-            },
-            -- stylua: ignore
-            {
-              function() return require("noice").api.status.mode.get() end,
-              cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-              color = fg("Constant"),
-            },
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = fg("Special") },
-            {
-              "diff",
-              symbols = {
-                added = icons.git.added,
-                modified = icons.git.modified,
-                removed = icons.git.removed,
-              },
-            },
-          },
+          lualine_x = {},
           lualine_y = {
             { "progress", separator = " ", padding = { left = 1, right = 0 } },
             { "location", padding = { left = 0, right = 1 } },
           },
           lualine_z = {
             function()
-              return " " .. os.date("%R")
+              return "⏱ " .. os.date("%R")
             end,
           },
         },
@@ -247,25 +247,31 @@ return {
     event = "VimEnter",
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
-      local logo = [[
-      ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z
-      ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z    
-      ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║   z       
-      ██║     ██╔══██║ ███╔╝    ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║ z         
-      ███████╗██║  ██║███████╗   ██║    ╚████╔╝ ██║██║ ╚═╝ ██║
-      ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝     ╚═══╝  ╚═╝╚═╝     ╚═╝
-      ]]
-
+            local logo = [[
+                    ███████
+                  ██░░░░░░░██
+                ██░░░░░░░░░░░█
+    ██          █░░░░░░░░██░░█████████
+  ██░░█         █░░░░░░░░░░░░█▒▒▒▒▒▒█
+  █░░░░██       ██░░░░░░░░░░░████████
+ █░░░░░░░█        █░░░░░░░░░█
+█░░░░░░░░░██████████░░░░░░░█
+█░░░░░░░░░░░░░░░░░░░░░░░░░░░██
+█░░░░░░░░░░░░░░░░█░░░░░░░░░░░░█
+██░░░░░░░░█░░░░░░░██░░░░░░░░░░█
+  █░░░░░░░░█████████░░░░░░░███
+   █████░░░░░░░░░░░░░░░████
+        ███████████████
+ ]]
       dashboard.section.header.val = vim.split(logo, "\n")
       dashboard.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file", ":Telescope find_files <CR>"),
-        dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
-        dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
-        dashboard.button("g", " " .. " Find text", ":Telescope live_grep <CR>"),
-        dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
-        dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
-        dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
-        dashboard.button("q", " " .. " Quit", ":qa<CR>"),
+        dashboard.button("f", "⧃ " .. " Find file", ":Telescope find_files <CR>"),
+        dashboard.button("n", "✚ " .. " New file", ":ene <BAR> startinsert <CR>"),
+        dashboard.button("r", "⎋ " .. " Recent files", ":Telescope oldfiles <CR>"),
+        dashboard.button("g", "䷀ " .. " Find text", ":Telescope live_grep <CR>"),
+        dashboard.button("c", "⛭ " .. " Config", ":e $MYVIMRC <CR>"),
+        dashboard.button("s", "↻ " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
+        dashboard.button("q", "➲ " .. " Quit", ":qa<CR>"),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = "AlphaButtons"
@@ -296,38 +302,12 @@ return {
         callback = function()
           local stats = require("lazy").stats()
           local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          dashboard.section.footer.val = "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms"
+          dashboard.section.footer.val = "Loaded " .. stats.count .. " plugins in " .. ms .. "ms"
           pcall(vim.cmd.AlphaRedraw)
         end,
       })
     end,
   },
-
-  -- lsp symbol navigation for lualine
-  {
-    "SmiteshP/nvim-navic",
-    lazy = true,
-    init = function()
-      vim.g.navic_silence = true
-      require("lazyvim.util").on_attach(function(client, buffer)
-        if client.server_capabilities.documentSymbolProvider then
-          require("nvim-navic").attach(client, buffer)
-        end
-      end)
-    end,
-    opts = function()
-      return {
-        separator = " ",
-        highlight = true,
-        depth_limit = 5,
-        icons = require("lazyvim.config").icons.kinds,
-      }
-    end,
-  },
-
-  -- icons
-  { "nvim-tree/nvim-web-devicons", lazy = true },
-
   -- ui components
   { "MunifTanjim/nui.nvim", lazy = true },
 }

@@ -5,6 +5,10 @@ return {
   -- file explorer
   {
     "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+    },
     cmd = "Neotree",
     keys = {
       {
@@ -49,9 +53,31 @@ return {
       default_component_configs = {
         indent = {
           with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
-          expander_collapsed = "",
-          expander_expanded = "",
-          expander_highlight = "NeoTreeExpander",
+          expander_collapsed = "+",
+          expander_expanded = ">",
+        },
+        icon = {
+          folder_closed = "🖿 ",
+          folder_open = "🗁 ",
+          folder_empty = "✖ ",
+          default = "-",
+          -- highlight = ">",
+        },
+        modified = {
+          -- highlight = ">>",
+        },
+        git_status = {
+          symbols = {
+            added = "★",
+            modified = "●",
+            deleted = "✖",
+            renamed = "r",
+            untracked = "?",
+            ignored = "ii",
+            unstaged = "u",
+            staged = "✚",
+            conflict = "!",
+          },
         },
       },
     },
@@ -142,8 +168,11 @@ return {
     },
     opts = {
       defaults = {
-        prompt_prefix = " ",
-        selection_caret = " ",
+          -- disable_devicons = true,
+        prompt_prefix = ":",
+        selection_caret = "^",
+        -- prompt_prefix = " ",
+        -- selection_caret = " ",
         mappings = {
           i = {
             ["<c-t>"] = function(...)
@@ -181,19 +210,19 @@ return {
     },
   },
 
-  -- easily jump to any location and enhanced f/t motions for Leap
-  {
-    "ggandor/flit.nvim",
-    keys = function()
-      ---@type LazyKeys[]
-      local ret = {}
-      for _, key in ipairs({ "f", "F", "t", "T" }) do
-        ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
-      end
-      return ret
-    end,
-    opts = { labeled_modes = "nx" },
-  },
+  -- -- easily jump to any location and enhanced f/t motions for Leap
+  -- {
+  --   "ggandor/flit.nvim",
+  --   keys = function()
+  --     ---@type LazyKeys[]
+  --     local ret = {}
+  --     for _, key in ipairs({ "f", "F", "t", "T" }) do
+  --       ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
+  --     end
+  --     return ret
+  --   end,
+  --   opts = { labeled_modes = "nx" },
+  -- },
   {
     "ggandor/leap.nvim",
     keys = {
@@ -249,14 +278,14 @@ return {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = {
-      signs = {
-        add = { text = "▎" },
-        change = { text = "▎" },
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "▎" },
-        untracked = { text = "▎" },
-      },
+      -- signs = {
+      --   add = { text = "▎" },
+      --   change = { text = "▎" },
+      --   delete = { text = "" },
+      --   topdelete = { text = "" },
+      --   changedelete = { text = "~" },
+      --   untracked = { text = "▎" },
+      -- },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
@@ -327,7 +356,11 @@ return {
   {
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "Trouble" },
-    opts = { use_diagnostic_signs = true },
+      opts = {
+        fold_open = "-",
+        fold_closed = "+",
+        use_diagnostic_signs = true,
+      },
     keys = {
       { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },

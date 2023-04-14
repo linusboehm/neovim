@@ -59,6 +59,34 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- change comment style for *.c, *.cpp, *.h files from /*...*/ to // ...
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("set_comment_style"),
+  pattern = { "h", "cpp", "c" },
+  callback = function()
+    vim.opt_local.commentstring = "// %s"
+  end,
+})
+
+
+-- -- change indent for lua style to 2
+-- vim.api.nvim_create_autocmd("FileType", {
+--   group = augroup("set_indent"),
+--   pattern = { "lua" },
+--   callback = function()
+--         print("hello")
+--     vim.opt.shiftwidth = 4 -- Size of an indent
+--     vim.opt.tabstop = 4 -- Number of spaces tabs count for
+--   end,
+-- })
+
+-- enable syntax highlighting for log files
+vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
+  group = augroup("set_syntax"),
+  pattern = "*.log",
+  command = "set syntax=log",
+})
+
 -- wrap and check for spell in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("wrap_spell"),
