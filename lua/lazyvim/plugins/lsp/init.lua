@@ -144,7 +144,7 @@ return {
           nls.builtins.formatting.shfmt,
           nls.builtins.formatting.clang_format,
           nls.builtins.formatting.black.with({ extra_args = { "--fast"}}),
-          nls.builtins.diagnostics.flake8,
+          -- nls.builtins.diagnostics.flake8,
           nls.builtins.diagnostics.cpplint,
           nls.builtins.formatting.cmake_format,
           nls.builtins.diagnostics.cmake_lint,
