@@ -106,8 +106,8 @@ return {
         options = {
           icons_enabled = false,
           theme = "auto",
-          globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "alpha" } },
+          ignore_focus = { "neo-tree" },
         },
         sections = {
           lualine_a = { "mode" },
