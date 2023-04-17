@@ -179,14 +179,41 @@ function _G.set_terminal_keymaps()
   vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
   -- vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts) -- not sure what this is there for
 
+  local function get_git_root()
+    local dot_git_path = vim.fn.finddir(".git", ".;")
+    return vim.fn.fnamemodify(dot_git_path, ":h")
+  end
+
+  local open_file = function()
+    -- local key = vim.api.nvim_replace_termcodes(search_cmd, true, false, true)
+    -- vim.api.nvim_feedkeys(key, 'n', false)
+    local f = vim.fn.expand("<cfile>")
+    local i, _ = string.find(f, "../")
+    f = f.sub(f,i,-1)
+    i, _ = string.find(f, "/src/")
+    local filename = f.sub(f,i,-1)
+    local git_path = get_git_root()
+    vim.fn.search(filename .. ":[0-9]", 'e')
+    local line_nr = vim.fn.expand("<cword>")
+    vim.fn.search(":[0-9]", 'e')
+    local col_nr = vim.fn.expand("<cword>")
+    filename = git_path .. filename
+    vim.api.nvim_command([[wincmd k]])
+    vim.cmd('e' .. filename)
+    vim.api.nvim_win_set_cursor(0, {tonumber(line_nr), tonumber(col_nr) - 1})
+  end
+
   -- search through cpp compiler output
   local user = os.getenv("USER")
   local cmd_line = "^" .. user .. "@"
   local cpp_line = [[^\.\.\/.*\.[cpph]\+:[0-9]\+:[0-9]\+:\|\/home\/.*\.[cpph]\+:[0-9]\+:]]
-  local cpp_or_cmd = cpp_line .. [[\|]] .. cmd_line
-  local search_cmd = "G?" .. cmd_line .. [[<CR>/]] .. cpp_or_cmd .. [[<CR>]]
-  vim.keymap.set('t', '<C-r>', [[<C-\><C-n>]] .. search_cmd, opts)
-  vim.keymap.set('n', '<C-r>', search_cmd, opts)
+  -- local cpp_or_cmd = cpp_line .. [[\|]] .. cmd_line
+  local search_cmd = ":set nowrapscan<CR>Gk?" .. cmd_line ..
+    [[<CR>:silent!/]] .. cpp_line .. [[<CR>:set wrapscan<CR>]]
+
+  vim.keymap.set('t', '<C-f>', [[<C-\><C-n>]] .. search_cmd, opts)
+  vim.keymap.set('n', '<C-f>', search_cmd, opts)
+  map("n", "gf", open_file, opts)
 end
 
 -- set keymaps (but not for lazygit!!)
