@@ -105,6 +105,7 @@ map("n", "*", "*Nzz")
 
 -- save file
 map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
+map("v", ":w<CR>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
 -- better indenting
 map("v", "<", "<gv")
@@ -188,7 +189,7 @@ function _G.set_terminal_keymaps()
     -- local key = vim.api.nvim_replace_termcodes(search_cmd, true, false, true)
     -- vim.api.nvim_feedkeys(key, 'n', false)
     local f = vim.fn.expand("<cfile>")
-    local i, _ = string.find(f, "../")
+    local i, _ = string.find(f, "%.%./")
     f = f.sub(f,i,-1)
     i, _ = string.find(f, "/src/")
     local filename = f.sub(f,i,-1)
