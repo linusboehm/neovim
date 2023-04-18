@@ -34,6 +34,7 @@ local defaults = {
       Warn = "‼",
       Hint = "↪ ",
       Info = "🛈 ",
+      -- Error = "🕱 ",
     },
     git = {
       added = "⭑",
