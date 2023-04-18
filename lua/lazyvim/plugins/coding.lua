@@ -9,10 +9,18 @@ return {
     --   or nil,
     build = nil,
     dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end,
+      {
+        "rafamadriz/friendly-snippets",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+      },
+      {
+        "LMBoehm/snippets",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+      },
     },
     opts = {
       history = true,
@@ -43,6 +51,7 @@ return {
       "hrsh7th/cmp-path",
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
+      "LMBoehm/snippets",
     },
     opts = function()
         local cmp = require("cmp")
