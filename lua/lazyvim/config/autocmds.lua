@@ -87,6 +87,26 @@ vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
   command = "set syntax=log",
 })
 
+-- 2 spaces indent for lua
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("lua_indent"),
+  pattern = { "lua" },
+  callback = function()
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.tabstop = 2
+  end,
+})
+
+-- 4 spaces indent for yaml
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("yaml_indent"),
+  pattern = { "yaml" },
+  callback = function()
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+  end,
+})
+
 -- wrap and check for spell in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("wrap_spell"),

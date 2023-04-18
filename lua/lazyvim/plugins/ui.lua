@@ -62,9 +62,9 @@ return {
         diagnostics = "nvim_lsp",
         always_show_bufferline = true,
         show_buffer_close_icons = false,
-        numbers = function(opts)
-          return string.format('%s', opts.raise(opts.id))
-        end,
+        -- numbers = function(opts)
+        --   return string.format('%s', opts.raise(opts.id))
+        -- end,
         separator_style = "thick",
         tab_size = 5,
         left_trunc_marker = '<',
