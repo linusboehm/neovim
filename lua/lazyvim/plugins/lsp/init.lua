@@ -45,6 +45,12 @@ return {
       -- LSP Server Settings
       ---@type lspconfig.options
       servers = {
+        pyright = {
+          root_dir = function()
+            local dot_git_path = vim.fn.finddir(".git", ".;")
+            return vim.fn.fnamemodify(dot_git_path, ":h")
+          end,
+        },
         jsonls = {},
         lua_ls = {
           -- mason = false, -- set to false if you don't want this server to be installed with mason
@@ -175,6 +181,7 @@ return {
           -- nls.builtins.diagnostics.flake8,
           nls.builtins.diagnostics.cpplint,
           nls.builtins.formatting.cmake_format,
+          nls.builtins.formatting.prettier,
           nls.builtins.diagnostics.cmake_lint,
         },
       }
