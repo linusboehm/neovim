@@ -51,6 +51,8 @@ return {
             return vim.fn.fnamemodify(dot_git_path, ":h")
           end,
         },
+        rust_analyzer = {},
+        marksman = {},
         jsonls = {},
         lua_ls = {
           -- mason = false, -- set to false if you don't want this server to be installed with mason
