@@ -22,12 +22,18 @@ local defaults = {
   },
   -- icons used by other plugins
   icons = {
-    dap = {
-      Stopped = { " ", "DiagnosticWarn", "DapStoppedLine" },
-      Breakpoint = " ",
-      BreakpointCondition = " ",
-      BreakpointRejected = { " ", "DiagnosticError" },
-      LogPoint = ".>",
+    -- dap = {
+    --   Stopped = { " ", "DiagnosticWarn", "DapStoppedLine" },
+    --   Breakpoint = " ",
+    --   BreakpointCondition = " ",
+    --   BreakpointRejected = { " ", "DiagnosticError" },
+    --   LogPoint = ".>",
+    notify = {
+      Error = "🕱 ",
+      Warn = "🜂",
+      Info = "🛈 ",
+      Debug = "↪",
+      Trace = "؂",
     },
     diagnostics = {
       Error = "✖ ",
