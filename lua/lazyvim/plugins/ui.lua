@@ -246,7 +246,15 @@ return {
           filter = { icon = "$" },
           lua = { icon = "☾" },
           help = { icon = "?" },
-
+        },
+      },
+      format = {
+        level = {
+          icons = {
+            error = "✖",
+            warn = "‼",
+            info = "🛈 ",
+          }
         },
       },
       routes = {
