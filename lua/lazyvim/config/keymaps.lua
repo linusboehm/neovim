@@ -107,9 +107,9 @@ map("n", "*", "*Nzz")
 map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 map("v", ":w<CR>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
--- better indenting
-map("v", "<", "<gv")
-map("v", ">", ">gv")
+-- -- better indenting
+-- map("v", "<", "<gv")
+-- map("v", ">", ">gv")
 
 -- lazy
 map("n", "<leader>l", "<cmd>:Lazy<cr>", { desc = "Lazy" })
