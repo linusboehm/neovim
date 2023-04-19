@@ -359,6 +359,7 @@ return {
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "Trouble" },
       opts = {
+        icons = false,
         fold_open = "-",
         fold_closed = "+",
         use_diagnostic_signs = true,
