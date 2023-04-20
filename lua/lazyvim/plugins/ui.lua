@@ -159,7 +159,7 @@ return {
               separator = "‖"
             },
           },
-          lualine_x = {},
+          lualine_x = { "searchcount" },
           lualine_y = {
             { "progress", separator = " ", padding = { left = 1, right = 0 } },
             { "location", padding = { left = 0, right = 1 } },
@@ -259,8 +259,11 @@ return {
       },
       routes = {
         { filter = { event = "msg_show", find = "search hit BOTTOM" }, skip = true },
+        { filter = { event = "msg_show", find = "search hit TOP" }, skip = true },
         { filter = { event = "notify", find = "# Config Change Detected" }, skip = true },
+        -- { filter = { event = "msg_show", find = "E486: Pattern not found:" }, stop = true },
         { filter = { event = "msg_show", find = "E486: Pattern not found:" }, view = 'mini' },
+        { filter = { event = "msg_show", kind = "search_count", }, skip = true },
       }
     },
     -- stylua: ignore
