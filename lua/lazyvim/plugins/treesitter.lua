@@ -32,10 +32,33 @@ return {
     },
     ---@type TSConfig
     opts = {
-      highlight = { enable = true },
+      highlight = {
+        enable = true,
+        disable = function(lang, buf)
+          -- disable for large files as it get super slow
+          local max_filesize = 100 * 1024 -- 100 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then
+              return true
+          end
+        end,
+      additional_vim_regex_highlighting = false,
+      },
       indent = {
         enable = true,
-        disable = { 'yaml' }
+        disable = function(lang, buf)
+          -- disable for yaml, as default is better
+          if vim.bo.filetype == "yaml" then
+            print("disable for " .. vim.bo.filetype)
+            return true
+          end
+          -- disable for large files as it get super slow
+          local max_filesize = 100 * 1024 -- 100 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then
+              return true
+          end
+        end,
       },
       context_commentstring = { enable = true, enable_autocmd = false },
       ensure_installed = {
@@ -58,6 +81,14 @@ return {
       },
       incremental_selection = {
         enable = true,
+        disable = function(lang, buf)
+          -- disable for large files as it get super slow
+          local max_filesize = 100 * 1024 -- 100 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then
+              return true
+          end
+        end,
         keymaps = {
           init_selection = "<C-space>",
           node_incremental = "<C-space>",
