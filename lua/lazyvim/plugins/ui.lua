@@ -103,6 +103,44 @@ return {
     event = "VeryLazy",
     opts = function()
       local icons = require("lazyvim.config").icons
+      local section_settings = {
+        lualine_a = { "mode" },
+        lualine_b = {
+          { function() return "⎇ " end, separator = "", padding = { left = 1, right = 0 }, },
+          { "branch", separator = "‖", },
+          { "diff",
+            symbols = {
+              added = icons.git.added,
+              modified = icons.git.modified,
+              removed = icons.git.removed,
+            },
+            separator = "‖",
+          },
+          {
+            "diagnostics",
+            symbols = {
+              error = icons.diagnostics.Error,
+              warn = icons.diagnostics.Warn,
+              info = icons.diagnostics.Info,
+              hint = icons.diagnostics.Hint,
+            },
+          },
+        },
+        lualine_c = {
+          {
+            "filename",
+            path = 1,
+            symbols = { modified = icons.git.modified, readonly = "", unnamed = "" },
+            separator = "‖"
+          },
+        },
+        lualine_x = { "searchcount" },
+        lualine_y = {
+          { "progress", separator = " ", padding = { left = 1, right = 0 } },
+          { "location", padding = { left = 0, right = 1 } },
+        },
+        lualine_z = { function() return "⏱ " .. os.date("%R") end, },
+      }
 
       -- local function fg(name)
       --   return function()
@@ -119,57 +157,8 @@ return {
           disabled_filetypes = { statusline = { "dashboard", "alpha", "toggleterm" } },
           ignore_focus = { "neo-tree", "toggleterm" },
         },
-        sections = {
-          lualine_a = { "mode" },
-          lualine_b = {
-            {
-              function()
-                return "⎇ "
-              end,
-              separator = "",
-              padding = { left = 1, right = 0 },
-            },
-            {
-              "branch",
-              separator = "‖",
-            },
-            { "diff",
-              symbols = {
-                added = icons.git.added,
-                modified = icons.git.modified,
-                removed = icons.git.removed,
-              },
-              separator = "‖",
-            },
-            {
-              "diagnostics",
-              symbols = {
-                error = icons.diagnostics.Error,
-                warn = icons.diagnostics.Warn,
-                info = icons.diagnostics.Info,
-                hint = icons.diagnostics.Hint,
-              },
-            },
-          },
-          lualine_c = {
-            {
-              "filename",
-              path = 1,
-              symbols = { modified = icons.git.modified, readonly = "", unnamed = "" },
-              separator = "‖"
-            },
-          },
-          lualine_x = { "searchcount" },
-          lualine_y = {
-            { "progress", separator = " ", padding = { left = 1, right = 0 } },
-            { "location", padding = { left = 0, right = 1 } },
-          },
-          lualine_z = {
-            function()
-              return "⏱ " .. os.date("%R")
-            end,
-          },
-        },
+        sections = section_settings,
+        inactive_sections = section_settings,
         extensions = { "neo-tree", "lazy" },
       }
     end,
