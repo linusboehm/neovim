@@ -53,32 +53,34 @@ return {
       default_component_configs = {
         indent = {
           with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
-          expander_collapsed = "+",
-          expander_expanded = ">",
+          expander_collapsed = "",
+          expander_expanded = "",
+          -- expander_collapsed = "+",
+          -- expander_expanded = ">",
         },
-        icon = {
-          folder_closed = "🖿 ",
-          folder_open = "🗁 ",
-          folder_empty = "✖ ",
-          default = "-",
-          -- highlight = ">",
-        },
-        modified = {
-          -- highlight = ">>",
-        },
-        git_status = {
-          symbols = {
-            added = "★",
-            modified = "●",
-            deleted = "✖",
-            renamed = "r",
-            untracked = "?",
-            ignored = "ii",
-            unstaged = "u",
-            staged = "✚",
-            conflict = "!",
-          },
-        },
+        -- icon = {
+        --   folder_closed = "🖿 ",
+        --   folder_open = "🗁 ",
+        --   folder_empty = "✖ ",
+        --   default = "-",
+        --   -- highlight = ">",
+        -- },
+        -- modified = {
+        --   -- highlight = ">>",
+        -- },
+        -- git_status = {
+        --   symbols = {
+        --     added = "★",
+        --     modified = "●",
+        --     deleted = "✖",
+        --     renamed = "r",
+        --     untracked = "?",
+        --     ignored = "ii",
+        --     unstaged = "u",
+        --     staged = "✚",
+        --     conflict = "!",
+        --   },
+        -- },
       },
     },
   },
@@ -414,20 +416,20 @@ return {
       { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
     },
     opts = {
-      keywords = {
-        FIX = {
-          icon = "✚ ", -- icon used for the sign, and in search results
-          color = "error", -- can be a hex color, or a named color (see below)
-          alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
-          -- signs = false, -- configure signs for some keywords individually
-        },
-        TODO = { icon = "✓ ", color = "info" },
-        HACK = { icon = "🛱 ", color = "warning" },
-        WARN = { icon = "🜂 ", color = "warning", alt = { "WARNING", "XXX" } },
-        PERF = { icon = "⏲ ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-        NOTE = { icon = "🖹 ", color = "hint", alt = { "INFO" } },
-        TEST = { icon = "⍰ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
-      }
+      -- keywords = {
+      --   FIX = {
+      --     icon = "✚ ", -- icon used for the sign, and in search results
+      --     color = "error", -- can be a hex color, or a named color (see below)
+      --     alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+      --     -- signs = false, -- configure signs for some keywords individually
+      --   },
+      --   TODO = { icon = "✓ ", color = "info" },
+      --   HACK = { icon = "🛱 ", color = "warning" },
+      --   WARN = { icon = "🜂 ", color = "warning", alt = { "WARNING", "XXX" } },
+      --   PERF = { icon = "⏲ ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+      --   NOTE = { icon = "🖹 ", color = "hint", alt = { "INFO" } },
+      --   TEST = { icon = "⍰ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+      -- }
     },
   },
 }

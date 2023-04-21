@@ -11,25 +11,34 @@ return {
         desc = "Delete all Notifications",
       },
     },
-    opts = function()
-      local icons = require("lazyvim.config").icons
-      return {
-        timeout = 3000,
-        max_height = function()
-          return math.floor(vim.o.lines * 0.75)
-        end,
-        max_width = function()
-          return math.floor(vim.o.columns * 0.75)
-        end,
-        icons = {
-          ERROR = icons.diagnostics.Error,
-          WARN = icons.diagnostics.Warn,
-          INFO = icons.diagnostics.Info,
-          DEBUG = icons.diagnostics.Hint,
-          TRACE = icons.diagnostics.Hint,
-        }
-      }
-    end,
+    opts = {
+      timeout = 3000,
+      max_height = function()
+        return math.floor(vim.o.lines * 0.75)
+      end,
+      max_width = function()
+        return math.floor(vim.o.columns * 0.75)
+      end,
+    },
+    -- opts = function()
+    --   local icons = require("lazyvim.config").icons
+    --   return {
+    --     timeout = 3000,
+    --     max_height = function()
+    --       return math.floor(vim.o.lines * 0.75)
+    --     end,
+    --     max_width = function()
+    --       return math.floor(vim.o.columns * 0.75)
+    --     end,
+    --     icons = {
+    --       ERROR = icons.diagnostics.Error,
+    --       WARN = icons.diagnostics.Warn,
+    --       INFO = icons.diagnostics.Info,
+    --       DEBUG = icons.diagnostics.Hint,
+    --       TRACE = icons.diagnostics.Hint,
+    --     }
+    --   }
+    -- end,
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
       local Util = require("lazyvim.util")
@@ -106,7 +115,7 @@ return {
       local section_settings = {
         lualine_a = { "mode" },
         lualine_b = {
-          { function() return "⎇ " end, separator = "", padding = { left = 1, right = 0 }, },
+          { function() return "" end, separator = "", padding = { left = 1, right = 0 }, },
           { "branch", separator = "‖", },
           { "diff",
             symbols = {
@@ -136,10 +145,12 @@ return {
         },
         lualine_x = { "searchcount" },
         lualine_y = {
+          { function() return "" end, separator = "" },
           { "progress", separator = " ", padding = { left = 1, right = 0 } },
           { "location", padding = { left = 0, right = 1 } },
         },
-        lualine_z = { function() return "⏱ " .. os.date("%R") end, },
+        -- lualine_z = { function() return "⏱ " .. os.date("%R") end, },
+        lualine_z = { function() return " " .. os.date("%R") end, },
       }
 
       -- local function fg(name)
@@ -228,25 +239,25 @@ return {
         command_palette = true,
         long_message_to_split = true,
       },
-      cmdline = {
-        format = {
-          cmdline = { icon = ">_" },
-          search_down = { icon = "/" },
-          search_up = { icon = "?" },
-          filter = { icon = "$" },
-          lua = { icon = "☾" },
-          help = { icon = "?" },
-        },
-      },
-      format = {
-        level = {
-          icons = {
-            error = "✖",
-            warn = "‼",
-            info = "🛈 ",
-          }
-        },
-      },
+      -- cmdline = {
+      --   format = {
+      --     cmdline = { icon = ">_" },
+      --     search_down = { icon = "/" },
+      --     search_up = { icon = "?" },
+      --     filter = { icon = "$" },
+      --     lua = { icon = "☾" },
+      --     help = { icon = "?" },
+      --   },
+      -- },
+      -- format = {
+      --   level = {
+      --     icons = {
+      --       error = "✖",
+      --       warn = "‼",
+      --       info = "🛈 ",
+      --     }
+      --   },
+      -- },
       routes = {
         { filter = { event = "msg_show", find = "search hit BOTTOM" }, skip = true },
         { filter = { event = "msg_show", find = "search hit TOP" }, skip = true },
@@ -294,12 +305,19 @@ return {
       dashboard.section.buttons.val = {
         dashboard.button("f", "⧃ " .. " Find file", ":Telescope find_files <CR>"),
         dashboard.button("n", "✚ " .. " New file", ":ene <BAR> startinsert <CR>"),
-        dashboard.button("r", "⏲ " .. " Recent files", ":Telescope oldfiles <CR>"),
-        -- dashboard.button("r", "⎋ " .. " Recent files", ":Telescope oldfiles <CR>"),
-        dashboard.button("g", "𝄚 " .. " Find text", ":Telescope live_grep <CR>"),
-        dashboard.button("c", "⛭ " .. " Config", ":e $MYVIMRC <CR>"),
-        dashboard.button("s", "↻ " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
-        dashboard.button("q", "➲ " .. " Quit", ":qa<CR>"),
+        dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
+        dashboard.button("g", " " .. " Find text", ":Telescope live_grep <CR>"),
+        dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
+        dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
+        dashboard.button("q", " " .. " Quit", ":qa<CR>"),
+        -- dashboard.button("f", "⧃ " .. " Find file", ":Telescope find_files <CR>"),
+        -- dashboard.button("n", "✚ " .. " New file", ":ene <BAR> startinsert <CR>"),
+        -- dashboard.button("r", "⏲ " .. " Recent files", ":Telescope oldfiles <CR>"),
+        -- -- dashboard.button("r", "⎋ " .. " Recent files", ":Telescope oldfiles <CR>"),
+        -- dashboard.button("g", "𝄚 " .. " Find text", ":Telescope live_grep <CR>"),
+        -- dashboard.button("c", "⛭ " .. " Config", ":e $MYVIMRC <CR>"),
+        -- dashboard.button("s", "↻ " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
+        -- dashboard.button("q", "➲ " .. " Quit", ":qa<CR>"),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = "AlphaButtons"
@@ -336,6 +354,10 @@ return {
       })
     end,
   },
+
+  -- icons
+  { "nvim-tree/nvim-web-devicons", lazy = true },
+
   -- ui components
   { "MunifTanjim/nui.nvim", lazy = true },
 }
