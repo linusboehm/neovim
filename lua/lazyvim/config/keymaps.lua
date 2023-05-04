@@ -15,23 +15,11 @@ end
 
 -- from vim
 map("i", "jj", "<esc>", { desc = "exit insert mode" })
-map("i", "jw", "<esc>:w<CR>", { desc = "exit insert mode" })
 
 -- yank from the cursor to the end of the line, to be consistent with C and D
 map("n", "Y", "y$")
 map("n", "vv", "V")
 map("n", "V", "v$")
-
-map("n", "<Leader>b1", ":1b<CR>", { desc = "jump to buffer #1" })
-map("n", "<Leader>b2", ":2b<CR>", { desc = "jump to buffer #2" })
-map("n", "<Leader>b3", ":3b<CR>", { desc = "jump to buffer #3" })
-map("n", "<Leader>b4", ":4b<CR>", { desc = "jump to buffer #4" })
-map("n", "<Leader>b5", ":5b<CR>", { desc = "jump to buffer #5" })
-map("n", "<Leader>b6", ":6b<CR>", { desc = "jump to buffer #6" })
-map("n", "<Leader>b7", ":7b<CR>", { desc = "jump to buffer #7" })
-map("n", "<Leader>b8", ":8b<CR>", { desc = "jump to buffer #8" })
-map("n", "<Leader>b9", ":9b<CR>", {desc =  "jump to buffer #9" })
-map("n", "<Leader>b0", ":10b<CR>", { desc = "jump to buffer #10" })
 
 -- better up/down
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -56,6 +44,11 @@ map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
 map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 map("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
+
+-- Visual Block --
+-- Move text up and down
+map("x", "J", ":move '>+1<CR>gv-gv", { desc = "move text up"})
+map("x", "K", ":move '<-2<CR>gv-gv", { desc = "move text down"})
 
 -- buffers
 if Util.has("bufferline.nvim") then
@@ -105,7 +98,9 @@ map("n", "*", "*Nzz")
 
 -- save file
 map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
-map("v", ":w<CR>", "<cmd>w<cr><esc>", { desc = "Save file" })
+map({ "i", "v", "n", "s" }, ";w<CR>", "<cmd>w<cr><esc>", { desc = "Save file" })
+map("i", "jjw", "<esc>:w<CR>", { desc = "Save file" })
+map("n", "<Leader>bw", "<esc>:w<CR>", { desc = "Save file" })
 
 -- -- better indenting
 -- map("v", "<", "<gv")
