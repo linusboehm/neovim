@@ -123,6 +123,15 @@ return {
 
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
+      -- If you want insert `(` after select function or method item
+      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+      local cmp = require('cmp')
+      cmp.event:on(
+        'confirm_done',
+        cmp_autopairs.on_confirm_done()
+      )
+
+      -- hook up vim-cmp and LSP
       local servers = opts.servers
       local capabilities = vim.tbl_deep_extend(
         "force",

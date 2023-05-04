@@ -47,12 +47,12 @@ return {
     event = "InsertEnter",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
       "LMBoehm/snippets",
       "neovim/nvim-lspconfig",
+      "hrsh7th/cmp-buffer",
     },
     opts = function()
         local cmp = require("cmp")
@@ -151,11 +151,11 @@ return {
           end,
         },
         experimental = {
-          ghost_text = {
-            hl_group = "LspCodeLens",
-          },
-          -- ghost_text = false,
-          -- native_menu = false,
+          -- ghost_text = {
+          --   hl_group = "LspCodeLens",
+          -- },
+          ghost_text = true,
+          native_menu = false,
           -- -- ghost_text = {
           -- --   hl_group = "LspCodeLens",
           -- -- },
@@ -166,11 +166,9 @@ return {
 
   -- auto pairs
   {
-    "echasnovski/mini.pairs",
+  	"windwp/nvim-autopairs",
     event = "VeryLazy",
-    config = function(_, opts)
-      require("mini.pairs").setup(opts)
-    end,
+    config = function() require("nvim-autopairs").setup {} end
   },
 
   -- surround
