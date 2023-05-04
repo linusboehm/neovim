@@ -165,6 +165,90 @@ map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
 -- toggleterm
+local Terminal = require("toggleterm.terminal").Terminal
+local htop = Terminal:new( {cmd = "htop", hidden = true, direction = "float"})
+local python = Terminal:new( {cmd = "python3", hidden = true, direction = "float" })
+local function htop_toggle() htop:toggle() end
+local function python_toggle() python:toggle() end
+
+
+local function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. dump(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
+end
+
+map("n", "<leader>gyu", function ()
+  local buf_nr = vim.api.nvim_get_current_buf()
+  -- if vim.api.nvim_buf_get_option(buf_nr, 'modified') == false then print("not mod") return end
+  local ut = vim.fn.undotree()
+  local entries = ut.entries
+  print(dump(ut))
+  local newhead
+  local curhead
+  local save
+  for i = #entries, 1, -1 do
+    local entry = entries[i]
+    if entry.newhead then newhead = i end
+    if entry.save then save = i end
+    if entry.curhead then curhead = i - 1 end
+  end
+  if save == nil then save = 0 end
+  if newhead == nil then newhead = 0 end
+  local head if curhead then head = curhead else head = newhead end
+  local mods
+  if vim.api.nvim_buf_get_option(buf_nr, 'modified') then mods = head - save else mods = 0 end
+  print("save:" .. save ..", newhead: " .. newhead .. ", head: " .. head, ", mods: " .. mods)
+end, { desc = "Previous Tab" })
+
+local function run_last_cmd(orig_win)
+  -- run cmd and go back to original window
+  local cmd = [[<esc>i<Up><CR><Cmd>]] .. orig_win .. [[ wincmd w<CR>]]
+  local key = vim.api.nvim_replace_termcodes(cmd, true, false, true)
+  vim.api.nvim_feedkeys(key, 'n', false)
+end
+
+local function execute_in_terminal(orig_win)
+  for var=1, 5 do
+    -- term://~/repos/trading_platform/scripts//28571:/bin/bash;#toggleterm#1
+    if string.find(vim.fn.expand("%"), "/bin/bash;#toggleterm") then
+      run_last_cmd(orig_win)
+      return true
+    end
+    vim.api.nvim_command([[wincmd j]])
+  end
+  return false
+end
+
+local function run_last()
+  local all = require('toggleterm.terminal').get_all()
+  local curr_win = vim.fn.winnr()
+  vim.api.nvim_command([[w]])
+  for _, term in ipairs(all) do
+    if term["direction"] == "horizontal" and string.find(term["name"], "/bin/bash") then
+      -- print(dump(term))
+      if execute_in_terminal(curr_win) then return end
+      -- there seems to be an existing terminal, but it must be toggled off
+      vim.api.nvim_command(term["id"] .. [[ToggleTerm]])
+      if execute_in_terminal(curr_win) then return end
+    end
+  end
+  -- no existing terminal found -> toggle new one
+  vim.api.nvim_command([[ToggleTerm]])
+  run_last_cmd(curr_win)
+end
+
+map("n", "<Leader>th", htop_toggle, {desc = "toggle htop"})
+map("n", "<Leader>tp", python_toggle, {desc = "toggle python"})
+map("n", "<Leader>tl", run_last, {desc = "run last"})
+
 function _G.set_terminal_keymaps()
   local opts = {buffer = 0}
   vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
@@ -180,14 +264,12 @@ function _G.set_terminal_keymaps()
     return vim.fn.fnamemodify(dot_git_path, ":h")
   end
 
-  local open_file = function()
-    -- local key = vim.api.nvim_replace_termcodes(search_cmd, true, false, true)
-    -- vim.api.nvim_feedkeys(key, 'n', false)
+  local open_cpp_file = function ()
     local f = vim.fn.expand("<cfile>")
     local i, _ = string.find(f, "%.%./")
-    f = f.sub(f,i,-1)
+    f = string.sub(f,i,-1)
     i, _ = string.find(f, "/src/")
-    local filename = f.sub(f,i,-1)
+    local filename = string.sub(f,i,-1)
     local git_path = get_git_root()
     vim.fn.search(filename .. ":[0-9]", 'e')
     local line_nr = vim.fn.expand("<cword>")
@@ -199,18 +281,45 @@ function _G.set_terminal_keymaps()
     vim.api.nvim_win_set_cursor(0, {tonumber(line_nr), tonumber(col_nr) - 1})
   end
 
+  local open_python_file = function ()
+    vim.fn.search([[\.]], 'e')
+    local filename = vim.fn.expand("<cfile>")
+    vim.fn.search("line [0-9]", 'e')
+    local line_nr = vim.fn.expand("<cword>")
+    vim.api.nvim_command([[wincmd k]])
+    vim.cmd('e' .. filename)
+    vim.api.nvim_win_set_cursor(0, {tonumber(line_nr), 0})
+  end
+
+  local open_file = function()
+    -- local key = vim.api.nvim_replace_termcodes(search_cmd, true, false, true)
+    -- vim.api.nvim_feedkeys(key, 'n', false)
+    local l = vim.api.nvim_get_current_line()
+    if string.find(l, [[.py]]) then
+      open_python_file()
+    else
+      open_cpp_file()
+    end
+  end
+
   -- search through cpp compiler output
   local user = os.getenv("USER")
-  local cmd_line = "^" .. user .. "@"
+  local hostname = tostring(os.getenv("HOSTNAME"))
+  local host = string.sub(hostname, string.find(hostname, "%."))
+  local cmd_line = user .. "@" .. host
   local cpp_line = [[^\.\.\/.*\.[cpph]\+:[0-9]\+:[0-9]\+:\|\/home\/.*\.[cpph]\+:[0-9]\+:]]
+  local python_line = [[^[ ]\+File ".*".*]]
+  local file = cpp_line .. [[\|]] .. python_line
   -- local cpp_or_cmd = cpp_line .. [[\|]] .. cmd_line
   local search_cmd = ":set nowrapscan<CR>Gk?" .. cmd_line ..
-    [[<CR>:silent!/]] .. cpp_line .. [[<CR>:set wrapscan<CR>]]
+    [[<CR>:silent!/]] .. file .. [[<CR>:set wrapscan<CR>]]
 
   vim.keymap.set('t', '<C-f>', [[<C-\><C-n>]] .. search_cmd, opts)
   vim.keymap.set('n', '<C-f>', search_cmd, opts)
   map("n", "gf", open_file, opts)
 end
 
+-- term://~/repos/trading_platform/scripts//9553:/bin/bash;#toggleterm#2
+-- term://~/repos/trading_platform/scripts//9411:python3;#toggleterm#1
 -- set keymaps (but not for lazygit!!)
 vim.cmd "autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()"

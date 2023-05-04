@@ -6,6 +6,7 @@ return {
     -- size = 20,
     open_mapping = [[<C-t>]],
     hide_numbers = true,
+    auto_scroll = false,
     shade_filetypes = {},
     shade_terminals = true,
     shading_factor = 2,
