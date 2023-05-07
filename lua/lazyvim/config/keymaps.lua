@@ -311,8 +311,8 @@ function _G.set_terminal_keymaps()
   -- search through cpp compiler output
   local user = os.getenv("USER")
   local hostname = tostring(os.getenv("HOSTNAME"))
-  local host = string.sub(hostname, string.find(hostname, "%."))
-  local cmd_line = user .. "@" .. host
+  -- local host = string.sub(hostname, string.find(hostname, "%."))
+  local cmd_line = user .. "@"
   local cpp_line = [[^\.\.\/.*\.[cpph]\+:[0-9]\+:[0-9]\+:\|\/home\/.*\.[cpph]\+:[0-9]\+:]]
   local python_line = [[^[ ]\+File ".*".*]]
   local file = cpp_line .. [[\|]] .. python_line
