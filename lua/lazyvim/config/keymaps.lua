@@ -98,9 +98,15 @@ map("n", "*", "*Nzz")
 
 -- save file
 map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
-map({ "i", "v", "n", "s" }, ";w<CR>", "<cmd>w<cr><esc>", { desc = "Save file" })
-map("i", "jjw", "<esc>:w<CR>", { desc = "Save file" })
-map("n", "<Leader>bw", "<esc>:w<CR>", { desc = "Save file" })
+-- map({ "i", "v", "n", "s" }, ";w<CR>", "<cmd>w<cr><esc>", { desc = "Save file" })
+-- map("i", "jjw", "<esc>:w<CR>", { desc = "Save file" })
+-- map("n", "<Leader>bw", "<esc>:w<CR>", { desc = "Save file" })
+
+-- remap colon to semicolon in norman and visual mode, but not in insert mode
+map("n", ";", ":", { desc = "semicolon -> colon" })
+map("n", ":", ";", { desc = "colon -> semicolon" })
+map("v", ";", ":", { desc = "semicolon -> colon" })
+map("v", ":", ";", { desc = "colon -> semicolon" })
 
 -- -- better indenting
 -- map("v", "<", "<gv")
@@ -209,8 +215,8 @@ map("n", "<leader>gyu", function ()
 end, { desc = "Previous Tab" })
 
 local function run_last_cmd(orig_win)
-  -- run cmd and go back to original window
-  local cmd = [[<esc>i<Up><CR><Cmd>]] .. orig_win .. [[ wincmd w<CR>]]
+  -- run cmd and go back to original window (enter insert mode, clear prompt run last)
+  local cmd = [[<esc>i<C-e><C-u><Up><CR><Cmd>]] .. orig_win .. [[ wincmd w<CR>]]
   local key = vim.api.nvim_replace_termcodes(cmd, true, false, true)
   vim.api.nvim_feedkeys(key, 'n', false)
 end
