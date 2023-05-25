@@ -275,7 +275,9 @@ function _G.set_terminal_keymaps()
   local open_cpp_file = function ()
     local f = vim.fn.expand("<cfile>")
     local i, _ = string.find(f, "%.%./")
-    f = string.sub(f,i,-1)
+    if i ~= nil then
+      f = string.sub(f,i,-1)
+    end
     i, _ = string.find(f, "/src/")
     local filename = string.sub(f,i,-1)
     local git_path = get_git_root()
@@ -312,7 +314,7 @@ function _G.set_terminal_keymaps()
 
   -- search through cpp compiler output
   local user = os.getenv("USER")
-  local hostname = tostring(os.getenv("HOSTNAME"))
+  -- local hostname = tostring(os.getenv("HOSTNAME"))
   -- local host = string.sub(hostname, string.find(hostname, "%."))
   local cmd_line = user .. "@"
   local cpp_line = [[^\.\.\/.*\.[cpph]\+:[0-9]\+:[0-9]\+:\|\/home\/.*\.[cpph]\+:[0-9]\+:]]
