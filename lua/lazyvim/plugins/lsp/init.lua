@@ -206,6 +206,8 @@ return {
           nls.builtins.formatting.cmake_format,
           nls.builtins.formatting.prettier,
           nls.builtins.diagnostics.cmake_lint,
+          nls.builtins.formatting.buf,
+          nls.builtins.diagnostics.protolint,
         },
       }
     end,

@@ -61,13 +61,12 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- change comment style for *.c, *.cpp, *.h files from /*...*/ to // ...
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("set_comment_style"),
-  pattern = { "h", "cpp", "c" },
+  group = augroup("set_slash_comment_style"),
+  pattern = { "h", "cpp", "c", "proto" },
   callback = function()
     vim.opt_local.commentstring = "// %s"
   end,
 })
-
 
 -- -- change indent for lua style to 2
 -- vim.api.nvim_create_autocmd("FileType", {
@@ -90,7 +89,7 @@ vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
 -- 2 spaces indent for lua
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("lua_indent"),
-  pattern = { "lua" },
+  pattern = { "lua", "proto" },
   callback = function()
     vim.opt_local.shiftwidth = 2
     vim.opt_local.tabstop = 2
