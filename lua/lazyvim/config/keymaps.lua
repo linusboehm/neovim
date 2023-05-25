@@ -236,7 +236,9 @@ end
 local function run_last()
   local all = require('toggleterm.terminal').get_all()
   local curr_win = vim.fn.winnr()
-  vim.api.nvim_command([[w]])
+  local buf_nr = vim.api.nvim_get_current_buf()
+  -- save only if modified (don't change last saved timestamp before rebuild)
+  if vim.api.nvim_buf_get_option(buf_nr, 'modified') == true then vim.api.nvim_command([[w]]) end
   for _, term in ipairs(all) do
     if term["direction"] == "horizontal" and string.find(term["name"], "/bin/bash") then
       -- print(dump(term))
