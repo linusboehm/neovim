@@ -240,7 +240,7 @@ local function run_last()
   -- save only if modified (don't change last saved timestamp before rebuild)
   if vim.api.nvim_buf_get_option(buf_nr, 'modified') == true then vim.api.nvim_command([[w]]) end
   for _, term in ipairs(all) do
-    if term["direction"] == "horizontal" and string.find(term["name"], "/bin/bash") then
+    if term["direction"] == "horizontal" and (string.find(term["name"], "/bin/bash") or string.find(term["name"], "/bin/zsh")) then
       -- print(dump(term))
       if execute_in_terminal(curr_win) then return end
       -- there seems to be an existing terminal, but it must be toggled off
