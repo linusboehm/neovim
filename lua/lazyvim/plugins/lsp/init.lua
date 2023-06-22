@@ -204,7 +204,7 @@ return {
           -- nls.builtins.diagnostics.flake8,
           nls.builtins.diagnostics.cpplint,
           nls.builtins.formatting.cmake_format,
-          nls.builtins.formatting.prettier,
+          nls.builtins.formatting.prettier.with({extra_args = {"--print-width", "100", "--prose-wrap", "always"}}),
           nls.builtins.diagnostics.cmake_lint,
           nls.builtins.formatting.buf,
           nls.builtins.diagnostics.protolint,
