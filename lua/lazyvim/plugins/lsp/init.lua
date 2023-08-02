@@ -65,13 +65,13 @@ return {
         },
         rust_analyzer = {},
         marksman = {},
-        -- clangd = {
-        --   cmd = {
-        --     "clangd",
-        --     "--offset-encoding=utf-16",
-        --   },
-        --   mason = false,
-        -- },
+        clangd = {
+          cmd = {
+            "clangd",
+            "--offset-encoding=utf-16",
+          },
+          mason = false,
+        },
         jsonls = {},
         lua_ls = {
           -- mason = false, -- set to false if you don't want this server to be installed with mason
