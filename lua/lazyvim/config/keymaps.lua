@@ -31,7 +31,6 @@ map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 -- map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
 -- map("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 
-
 map("n", "<C-h>", "<cmd> TmuxNavigateLeft<CR>", { desc = "window left" })
 map("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { desc = "window right" })
 map("n", "<C-j>", "<cmd> TmuxNavigateDown<CR>", { desc = "window down" })
@@ -53,8 +52,8 @@ map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 
 -- Visual Block --
 -- Move text up and down
-map("x", "J", ":move '>+1<CR>gv-gv", { desc = "move text up"})
-map("x", "K", ":move '<-2<CR>gv-gv", { desc = "move text down"})
+map("x", "J", ":move '>+1<CR>gv-gv", { desc = "move text up" })
+map("x", "K", ":move '<-2<CR>gv-gv", { desc = "move text down" })
 
 -- buffers
 if Util.has("bufferline.nvim") then
@@ -95,7 +94,6 @@ map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result
 -- map("n", "n", "nzz")
 -- map("n", "N", "Nzz")
 map("n", "*", "*Nzz")
-
 
 -- -- Add undo break-points
 -- map("i", ",", ",<c-g>u")
@@ -279,19 +277,32 @@ function _G.set_terminal_keymaps()
   end
 
   local open_cpp_file = function ()
-    local f = vim.fn.expand("<cfile>")
-    local i, _ = string.find(f, "%.%./")
-    if i ~= nil then
-      f = string.sub(f,i,-1)
-    end
-    i, _ = string.find(f, "/src/")
-    local filename = string.sub(f,i,-1)
-    local git_path = get_git_root()
+    local filename = vim.fn.expand("<cfile>")
+    print(filename)
+    -- escape `.` with %!!!
+    -- local i, _ = string.find(f, "%.%./")
+    -- if i ~= nil then
+    --   f = string.sub(f,i,-1)
+    -- end
+    -- i, _ = string.find(f, "/src/")
+    -- if i ~= nil then
+    --   local filename = string.sub(f,i,-1)
+    -- end
+    --   local filename = string.gsub(f,"%.%./%.","")
+    --   local filename = string.gsub(f,"%.%.","")
+    -- print(vim.loop.cwd())
+    -- print(vim.loop.cwd())
+    -- print("hello" .. vim.loop.cwd())
     vim.fn.search(filename .. ":[0-9]", 'e')
     local line_nr = vim.fn.expand("<cword>")
     vim.fn.search(":[0-9]", 'e')
     local col_nr = vim.fn.expand("<cword>")
-    filename = git_path .. filename
+    -- move cursor back to beginning of row
+    local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+    vim.api.nvim_win_set_cursor(0, {row, 0})
+    local git_path = get_git_root()
+    filename = git_path .. "/" .. filename
+    -- print("trying to open: " .. filename)
     vim.api.nvim_command([[wincmd k]])
     vim.cmd('e' .. filename)
     vim.api.nvim_win_set_cursor(0, {tonumber(line_nr), tonumber(col_nr) - 1})
@@ -323,17 +334,19 @@ function _G.set_terminal_keymaps()
   -- local hostname = tostring(os.getenv("HOSTNAME"))
   -- local host = string.sub(hostname, string.find(hostname, "%."))
   local cmd_line = user .. "@"
-  local cpp_line = [[^\.\.\/.*\.[cpph]\+:[0-9]\+:[0-9]\+:\|\/home\/.*\.[cpph]\+:[0-9]\+:]]
+  local cpp_line = [[^.*\.[cph]\+:[0-9]\+:[0-9]\+:\|\/home\/.*\.[cpph]\+:[0-9]\+:]]
   local python_line = [[^[ ]\+File ".*".*]]
   local file = cpp_line .. [[\|]] .. python_line
   -- local cpp_or_cmd = cpp_line .. [[\|]] .. cmd_line
-  local search_cmd = ":set nowrapscan<CR>Gk?" .. cmd_line ..
+  local search_cmd = ":set nowrapscan<CR>G?.k<CR>?" .. cmd_line ..
     [[<CR>:silent!/]] .. file .. [[<CR>:set wrapscan<CR>]]
 
   vim.keymap.set('t', '<C-f>', [[<C-\><C-n>]] .. search_cmd, opts)
   vim.keymap.set('n', '<C-f>', search_cmd, opts)
   map("n", "gf", open_file, opts)
 end
+
+vim.keymap.set("n", "<leader>tt", ":lua require('toggle-checkbox').toggle()<CR>")
 
 -- term://~/repos/trading_platform/scripts//9553:/bin/bash;#toggleterm#2
 -- term://~/repos/trading_platform/scripts//9411:python3;#toggleterm#1
