@@ -104,6 +104,7 @@ map("n", "*", "*Nzz")
 map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 -- fix sloppy saving
 map({ "i" }, "j;w", "<cmd>w<cr><esc>", { desc = "Save file" })
+map({ "i" }, "j;jw", "<cmd>w<cr><esc>", { desc = "Save file" })
 -- map({ "i", "v", "n", "s" }, ";w<CR>", "<cmd>w<cr><esc>", { desc = "Save file" })
 -- map("i", "jjw", "<esc>:w<CR>", { desc = "Save file" })
 -- map("n", "<Leader>bw", "<esc>:w<CR>", { desc = "Save file" })
