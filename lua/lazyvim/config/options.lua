@@ -48,6 +48,7 @@ opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
 opt.colorcolumn = "100"
+vim.g.tmux_navigator_no_wrap = 1
 
 if vim.fn.has("nvim-0.9.0") == 1 then
   opt.splitkeep = "screen"

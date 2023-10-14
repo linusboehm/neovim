@@ -151,7 +151,19 @@ return {
         lualine_a = { "mode" },
         lualine_b = {
           -- { function() return "" end, separator = "", padding = { left = 1, right = 0 }, },
-          { "branch", separator = "", icon = "" },
+          { "branch", separator = "", icon = "", fmt=function(str)
+              -- truncate long branches
+              if #str <= 10 then return str end
+              local ret_str = ""
+              local last_substr = ""
+              for substr in string.gmatch(str, "[^/]+") do
+                last_substr = substr
+                ret_str = ret_str .. string.sub(substr, 1, 5) .. "../"
+              end
+              ret_str = ret_str:sub(1, -4) .. string.sub(last_substr, 6, 9) .. ".."
+              return ret_str
+            end
+          },
           git_diff(is_active),
           diagnostic(is_active),
         },

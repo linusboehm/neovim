@@ -185,6 +185,9 @@ local function htop_toggle() htop:toggle() end
 local function python_toggle() python:toggle() end
 
 
+-- aerial
+map('n', '<leader>a', '<cmd>AerialToggle!<CR>')
+
 local function dump(o)
    if type(o) == 'table' then
       local s = '{ '
