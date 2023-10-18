@@ -46,6 +46,7 @@ return {
     version = false, -- last release is way too old
     event = "InsertEnter",
     dependencies = {
+      "hrsh7th/cmp-nvim-lua",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
       "saadparwaiz1/cmp_luasnip",
@@ -55,24 +56,29 @@ return {
       "hrsh7th/cmp-buffer",
     },
     opts = function()
-        local cmp = require("cmp")
-        local snip_status_ok, luasnip = pcall(require, "luasnip")
-        if not snip_status_ok then
-          return
-        end
+      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+      local cmp = require("cmp")
+      local defaults = require("cmp.config.default")()
 
-        -- -- Set up lspconfig.
-        -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
-        -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-        -- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
-        --   capabilities = capabilities
-        -- }
+      -- local cmp = require("cmp")
+      local snip_status_ok, luasnip = pcall(require, "luasnip")
+      if not snip_status_ok then
+        print("received not ok status from luasnip")
+        return
+      end
 
-        local check_backspace = function()
-           local col = vim.fn.col "." - 1
-           return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
-        end
-        return {
+      -- -- Set up lspconfig.
+      -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+      -- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
+      --   capabilities = capabilities
+      -- }
+
+      local check_backspace = function()
+        local col = vim.fn.col(".") - 1
+        return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
+      end
+      return {
         completion = {
           completeopt = "menu,menuone,noinsert",
         },
@@ -124,6 +130,7 @@ return {
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
+          -- { name = "nvim_lua" },
           { name = "luasnip" },
           {
             name = "buffer",
@@ -131,8 +138,8 @@ return {
             option = {
               get_bufnrs = function()
                 return vim.api.nvim_list_bufs()
-              end
-            }
+              end,
+            },
           },
           { name = "path" },
         }),
@@ -152,6 +159,9 @@ return {
         },
         experimental = {
           -- ghost_text = {
+          --   hl_group = "CmpGhostText",
+          -- },
+          -- ghost_text = {
           --   hl_group = "LspCodeLens",
           -- },
           ghost_text = true,
@@ -160,15 +170,18 @@ return {
           -- --   hl_group = "LspCodeLens",
           -- -- },
         },
+        sorting = defaults.sorting,
       }
     end,
   },
 
   -- auto pairs
   {
-  	"windwp/nvim-autopairs",
+    "windwp/nvim-autopairs",
     event = "VeryLazy",
-    config = function() require("nvim-autopairs").setup {} end
+    config = function()
+      require("nvim-autopairs").setup({})
+    end,
   },
 
   -- surround
