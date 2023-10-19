@@ -174,6 +174,7 @@ return {
           -- disable_devicons = true,
         prompt_prefix = ":",
         selection_caret = "^",
+        path_display = { "smart" }, -- other options are "shorten" and "truncate"
         -- prompt_prefix = " ",
         -- selection_caret = " ",
         mappings = {
