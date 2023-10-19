@@ -1,6 +1,7 @@
 -- This file is automatically loaded by lazyvim.plugins.config
 
 local Util = require("lazyvim.util")
+local CoreUtil = require("lazy.core.util")
 
 local function map(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys
@@ -49,6 +50,15 @@ map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
 map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 map("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
+
+-- printing
+map("n", "<leader>pf", ":m '<-2<cr>gv=gv", { desc = "Move up" })
+map("n", "<leader>pf", function()
+  local path = vim.api.nvim_buf_get_name(0)
+  local git_root = Util.get_git_root()
+  path = path:gsub(git_root .. "/", "")
+  CoreUtil.info(path, { title = "current file name" })
+end, { desc = "print current filename" })
 
 -- Visual Block --
 -- Move text up and down
@@ -277,14 +287,6 @@ function _G.set_terminal_keymaps()
   vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
   -- vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts) -- not sure what this is there for
 
-  local function get_git_root()
-    local dot_git_path = vim.fn.finddir(".git", ".;")
-    if dot_git_path == "" then
-      dot_git_path = vim.fn.finddir(".github", ".;")
-    end
-    return vim.fn.fnamemodify(dot_git_path, ":h")
-  end
-
   local function file_exists(name)
     -- vim.print("checking if " .. name .. " exists.")
     local f = io.open(name, "r")
@@ -314,13 +316,13 @@ function _G.set_terminal_keymaps()
     vim.api.nvim_win_set_cursor(0, {row, 0})
 
     local relative_path = "./" .. filename
-    local git_path = get_git_root() .. "/" .. filename
+    local git_path = Util.get_git_root() .. "/" .. filename
     if file_exists(relative_path) then
       open_file_at_location(relative_path, line_nr, col_nr)
     elseif file_exists(git_path) then
       open_file_at_location(git_path, line_nr, col_nr)
     else
-      require("lazy.core.util").warn("unable to find file " .. filename, { title = "Jump to source location" })
+      CoreUtil.warn("unable to find file " .. filename, { title = "Jump to source location" })
     end
   end
 

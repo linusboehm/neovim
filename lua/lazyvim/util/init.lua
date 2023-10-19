@@ -85,6 +85,16 @@ function M.get_root()
   return root
 end
 
+-- returns the git root directory
+---@return string
+function M.get_git_root()
+  local dot_git_path = vim.fn.finddir(".git", ".;")
+  if dot_git_path == "" then
+    dot_git_path = vim.fn.finddir(".github", ".;")
+  end
+  return vim.fn.fnamemodify(dot_git_path, ":h")
+end
+
 -- this will return a function that calls telescope.
 -- cwd will default to lazyvim.util.get_root
 -- for `files`, git_files or find_files will be chosen depending on .git
