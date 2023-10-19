@@ -320,7 +320,7 @@ function _G.set_terminal_keymaps()
     elseif file_exists(git_path) then
       open_file_at_location(git_path, line_nr, col_nr)
     else
-      Util.warn("unable to find file " .. filename, { title = "Option" })
+      require("lazy.core.util").warn("unable to find file " .. filename, { title = "Jump to source location" })
     end
   end
 
@@ -329,9 +329,7 @@ function _G.set_terminal_keymaps()
     local filename = vim.fn.expand("<cfile>")
     vim.fn.search("line [0-9]", 'e')
     local line_nr = vim.fn.expand("<cword>")
-    vim.api.nvim_command([[wincmd k]])
-    vim.cmd('e' .. filename)
-    vim.api.nvim_win_set_cursor(0, {tonumber(line_nr), 0})
+    open_file_at_location(filename, line_nr, 0)
   end
 
   local open_file = function()
