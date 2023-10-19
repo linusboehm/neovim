@@ -256,7 +256,7 @@ local function run_last()
       -- there seems to be an existing terminal, but it must be toggled off
       vim.api.nvim_command(term["id"] .. [[ToggleTerm]])
       if execute_in_terminal(curr_win) then return end
-    end
+    end                                                                                                                                                          
   end
   -- no existing terminal found -> toggle new one
   vim.api.nvim_command([[ToggleTerm]])
@@ -279,26 +279,32 @@ function _G.set_terminal_keymaps()
 
   local function get_git_root()
     local dot_git_path = vim.fn.finddir(".git", ".;")
+    if dot_git_path == "" then
+      dot_git_path = vim.fn.finddir(".github", ".;")
+    end
     return vim.fn.fnamemodify(dot_git_path, ":h")
+  end
+
+  local function file_exists(name)
+    -- vim.print("checking if " .. name .. " exists.")
+    local f = io.open(name, "r")
+    return f ~= nil and io.close(f)
+  end
+
+  local function open_file_at_location(filename, line_nr, col_nr)
+    -- vim.print("trying to open: " .. filename)
+    vim.api.nvim_command([[wincmd k]])
+    vim.cmd('e' .. filename)
+    vim.api.nvim_win_set_cursor(0, {tonumber(line_nr), tonumber(col_nr) - 1})
   end
 
   local open_cpp_file = function ()
     local filename = vim.fn.expand("<cfile>")
-    print(filename)
-    -- escape `.` with %!!!
     -- local i, _ = string.find(f, "%.%./")
     -- if i ~= nil then
     --   f = string.sub(f,i,-1)
     -- end
     -- i, _ = string.find(f, "/src/")
-    -- if i ~= nil then
-    --   local filename = string.sub(f,i,-1)
-    -- end
-    --   local filename = string.gsub(f,"%.%./%.","")
-    --   local filename = string.gsub(f,"%.%.","")
-    -- print(vim.loop.cwd())
-    -- print(vim.loop.cwd())
-    -- print("hello" .. vim.loop.cwd())
     vim.fn.search(filename .. ":[0-9]", 'e')
     local line_nr = vim.fn.expand("<cword>")
     vim.fn.search(":[0-9]", 'e')
@@ -306,12 +312,16 @@ function _G.set_terminal_keymaps()
     -- move cursor back to beginning of row
     local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
     vim.api.nvim_win_set_cursor(0, {row, 0})
-    local git_path = get_git_root()
-    filename = git_path .. "/" .. filename
-    -- print("trying to open: " .. filename)
-    vim.api.nvim_command([[wincmd k]])
-    vim.cmd('e' .. filename)
-    vim.api.nvim_win_set_cursor(0, {tonumber(line_nr), tonumber(col_nr) - 1})
+
+    local relative_path = "./" .. filename
+    local git_path = get_git_root() .. "/" .. filename
+    if file_exists(relative_path) then
+      open_file_at_location(relative_path, line_nr, col_nr)
+    elseif file_exists(git_path) then
+      open_file_at_location(git_path, line_nr, col_nr)
+    else
+      Util.warn("unable to find file " .. filename, { title = "Option" })
+    end
   end
 
   local open_python_file = function ()
