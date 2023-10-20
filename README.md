@@ -3,19 +3,18 @@ Neovim config based on [LazyVim](https://github.com/LazyVim/LazyVim)
 ## Features
 
 
-- large overlap with lazyvim
-- differences:
-    - added toggleterm
-    - [Nerd Font](https://www.nerdfonts.com/) deactivated everywhere (better support on phones etc)
+- differences to LazyVim:
+    - some extra plugins under `./lua/plugins/`
     - minor changes in keymappings and such
 
 ## Requirements
 
-- Neovim >= **0.8.0** (needs to be built with **LuaJIT**)
+- Neovim >= **0.9.0** (needs to be built with **LuaJIT**)
 - Git >= **2.19.0** (for partial clones support)
 - [lazygit](https://github.com/jesseduffield/lazygit#installation)
 - npm
-- ripgrep
+- [ripgrep](https://github.com/BurntSushi/ripgrep)
+- [Nerd Font](https://www.nerdfonts.com/)
 
 ## Getting Started
 
