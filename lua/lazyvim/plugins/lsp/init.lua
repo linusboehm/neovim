@@ -230,6 +230,11 @@ return {
       ensure_installed = {
         "stylua",
         "shfmt",
+        "pyright",
+        "prettier",
+        "marksman",
+        "rust-analyzer",
+        "clangd",
         -- potentially add some rust, c++, python stuff here
       },
     },

@@ -15,6 +15,7 @@ Neovim config based on [LazyVim](https://github.com/LazyVim/LazyVim)
 - Git >= **2.19.0** (for partial clones support)
 - [lazygit](https://github.com/jesseduffield/lazygit#installation)
 - npm
+- ripgrep
 
 ## Getting Started
 
