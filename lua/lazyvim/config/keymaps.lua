@@ -177,7 +177,7 @@ map("n", "<leader>wd", "<C-W>c", { desc = "Delete window" })
 map("n", "<leader>w-", "<C-W>s", { desc = "Split window below" })
 map("n", "<leader>w|", "<C-W>v", { desc = "Split window right" })
 map("n", "<leader>-", "<C-W>s", { desc = "Split window below" })
-map("n", "<leader>|", "<C-W>v:bn<CR>", { desc = "Split window right" })
+map("n", "<leader>|", ":bp<CR><C-W>v:bn<CR>", { desc = "Split window right" })
 
 -- tabs
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
@@ -212,27 +212,8 @@ local function dump(o)
 end
 
 map("n", "<leader>gyu", function ()
-  local buf_nr = vim.api.nvim_get_current_buf()
-  -- if vim.api.nvim_buf_get_option(buf_nr, 'modified') == false then print("not mod") return end
-  local ut = vim.fn.undotree()
-  local entries = ut.entries
-  print(dump(ut))
-  local newhead
-  local curhead
-  local save
-  for i = #entries, 1, -1 do
-    local entry = entries[i]
-    if entry.newhead then newhead = i end
-    if entry.save then save = i end
-    if entry.curhead then curhead = i - 1 end
-  end
-  if save == nil then save = 0 end
-  if newhead == nil then newhead = 0 end
-  local head if curhead then head = curhead else head = newhead end
-  local mods
-  if vim.api.nvim_buf_get_option(buf_nr, 'modified') then mods = head - save else mods = 0 end
-  print("save:" .. save ..", newhead: " .. newhead .. ", head: " .. head, ", mods: " .. mods)
-end, { desc = "Previous Tab" })
+  -- test something here
+end, { desc = "test something" })
 
 local function run_last_cmd(orig_win)
   -- run cmd and go back to original window (enter insert mode, clear prompt run last)
@@ -326,20 +307,46 @@ function _G.set_terminal_keymaps()
     end
   end
 
-  local open_python_file = function ()
-    vim.fn.search([[\.]], 'e')
-    local filename = vim.fn.expand("<cfile>")
-    vim.fn.search("line [0-9]", 'e')
-    local line_nr = vim.fn.expand("<cword>")
-    open_file_at_location(filename, line_nr, 0)
+  local function get_curr_search_match()
+    vim.api.nvim_feedkeys('gn"ly', 'x', false)
+    local selection = vim.fn.getreg("l")
+    selection = string.gsub(selection, "[\n\r]", "")
+    return selection
+  end
+
+  local open_python_file = function (line)
+
+    local git_root = Util.get_git_root() .. "/ros/src/"
+    -- vim.api.nvim_feedkeys('GN', 'x', false)
+    -- local p = get_curr_search_match()
+    vim.api.nvim_command([[wincmd k]])
+
+    local _, _, path, line_nr = string.find(line, "\"([^\"]*)\".*line (%d+)")
+
+    -- remove some bazel auto-gen path components
+    local partial_path = string.sub(path, string.find(path, "_exedir/") + 8)
+    -- CoreUtil.warn("number: " .. line_nr .. ". partial path: " .. partial_path)
+    local filename = vim.fn.findfile(partial_path, git_root .. "/**")
+    open_file_at_location(filename, line_nr, 1)
+
+    -- Util.telescope("find_files", {
+    --   default_text = default_text,
+    --   cwd = git_root,
+    --   on_complete = {
+    --     function(picker)
+    --       require("telescope.actions").select_default(picker.prompt_bufnr)
+    --     end,
+    --   },
+    -- })()
   end
 
   local open_file = function()
     -- local key = vim.api.nvim_replace_termcodes(search_cmd, true, false, true)
     -- vim.api.nvim_feedkeys(key, 'n', false)
-    local l = vim.api.nvim_get_current_line()
+    -- local l = vim.api.nvim_get_current_line()
+    local l = get_curr_search_match()
     if string.find(l, [[.py]]) then
-      open_python_file()
+      open_python_file(l)
     else
       open_cpp_file()
     end
@@ -351,7 +358,7 @@ function _G.set_terminal_keymaps()
   -- local host = string.sub(hostname, string.find(hostname, "%."))
   local cmd_line = user .. "@"
   local cpp_line = [[^.*\.[cph]\+:[0-9]\+:[0-9]\+:\|\/home\/.*\.[cpph]\+:[0-9]\+:]]
-  local python_line = [[^[ ]\+File ".*".*]]
+  local python_line = [[^[ ]\+File "[^"]*\n\?.*".*]]
   local file = cpp_line .. [[\|]] .. python_line
   -- local cpp_or_cmd = cpp_line .. [[\|]] .. cmd_line
   local search_cmd = ":set nowrapscan<CR>G?.k<CR>?" .. cmd_line ..

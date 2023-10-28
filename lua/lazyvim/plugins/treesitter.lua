@@ -49,7 +49,6 @@ return {
         disable = function(lang, buf)
           -- disable for yaml, as default is better
           if vim.bo.filetype == "yaml" then
-            print("disable for " .. vim.bo.filetype)
             return true
           end
           -- disable for large files as it get super slow
