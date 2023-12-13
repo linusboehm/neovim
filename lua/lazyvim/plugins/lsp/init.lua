@@ -45,18 +45,21 @@ return {
       -- LSP Server Settings
       ---@type lspconfig.options
       servers = {
+        ruff_lsp = { args = {} },
         pyright = {
           root_dir = function(fname)
-            local util = require 'lspconfig/util'
+            local util = require("lspconfig/util")
             local root_files = {
-              'pyproject.toml',
-              'setup.py',
-              'setup.cfg',
+              "pyproject.toml",
+              "setup.py",
+              "setup.cfg",
               -- 'requirements.txt',
-              'Pipfile',
-              'pyrightconfig.json',
+              "Pipfile",
+              "pyrightconfig.json",
             }
-            return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname) or util.path.dirname(fname)
+            return util.root_pattern(unpack(root_files))(fname)
+              or util.find_git_ancestor(fname)
+              or util.path.dirname(fname)
           end,
           -- root_dir = function()
           --   local dot_git_path = vim.fn.finddir(".git", ".;")
@@ -130,12 +133,9 @@ return {
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
       -- If you want insert `(` after select function or method item
-      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-      local cmp = require('cmp')
-      cmp.event:on(
-        'confirm_done',
-        cmp_autopairs.on_confirm_done()
-      )
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      local cmp = require("cmp")
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
       -- hook up vim-cmp and LSP
       local servers = opts.servers
@@ -207,11 +207,13 @@ return {
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
           nls.builtins.formatting.clang_format,
-          nls.builtins.formatting.black.with({ extra_args = { "--fast"}}),
+          -- nls.builtins.formatting.ruff, -- currently not working
+          -- nls.builtins.diagnostics.ruff, -- same diagnostics as ruff-lsp
+          nls.builtins.formatting.black.with({ extra_args = { "--fast" } }),
           -- nls.builtins.diagnostics.flake8,
           nls.builtins.diagnostics.cpplint,
           nls.builtins.formatting.cmake_format,
-          nls.builtins.formatting.prettier.with({extra_args = {"--print-width", "100", "--prose-wrap", "always"}}),
+          nls.builtins.formatting.prettier.with({ extra_args = { "--print-width", "100", "--prose-wrap", "always" } }),
           nls.builtins.diagnostics.cmake_lint,
           nls.builtins.formatting.buf,
           nls.builtins.diagnostics.protolint,
@@ -235,6 +237,8 @@ return {
         "marksman",
         "rust-analyzer",
         "clangd",
+        "ruff-lsp",
+        -- "ruff",
         -- potentially add some rust, c++, python stuff here
       },
     },
