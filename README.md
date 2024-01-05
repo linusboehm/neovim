@@ -23,7 +23,7 @@ Neovim config based on [LazyVim](https://github.com/LazyVim/LazyVim)
 ```sh
 docker run -w /root -it --rm alpine:edge sh -uelic '
   apk add git lazygit neovim ripgrep alpine-sdk --update
-  git clone https://github.com/LMBoehm/starter ~/.config/nvim
+  git clone https://github.com/linusboehm/starter ~/.config/nvim
   cd ~/.config/nvim
   nvim
 ```
@@ -44,7 +44,7 @@ docker run -w /root -it --rm alpine:edge sh -uelic '
   ```sh
     mkdir ~/.config
     cd ~/.config
-    git clone git@github.com:LMBoehm/neovim.git nvim
+    git clone git@github.com:linusboehm/neovim.git nvim
   ```
 
 - Remove the `.git` folder, so you can add it to your own repo later
