@@ -105,7 +105,7 @@ return {
       { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
       { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
       -- find
-      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers filenames" },
       { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
       { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
@@ -115,7 +115,14 @@ return {
       -- search
       { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
       { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
-      -- { "<leader>sb", Util.telescope("live_grep"), {grep_open_files=true}, desc = "open buffers" },
+      {
+        "<leader>sB",
+        Util.telescope("live_grep", {
+          prompt_title = "find string in open buffers...",
+          grep_open_files = true,
+        }),
+        desc = "Search buffers",
+      },
       { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
       { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
       { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
@@ -171,7 +178,7 @@ return {
     },
     opts = {
       defaults = {
-          -- disable_devicons = true,
+        -- disable_devicons = true,
         prompt_prefix = ":",
         selection_caret = "^",
         path_display = { "smart" }, -- other options are "shorten" and "truncate"
@@ -322,7 +329,7 @@ return {
     opts = {
       delay = 200,
       -- filetypes_denylist = { "json" },
-      large_file_cutoff = 1000,  -- this gets incredibly slow for larger files!!!
+      large_file_cutoff = 1000, -- this gets incredibly slow for larger files!!!
     },
     config = function(_, opts)
       require("illuminate").configure(opts)
@@ -365,12 +372,12 @@ return {
   {
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "Trouble" },
-      opts = {
-        icons = false,
-        fold_open = "-",
-        fold_closed = "+",
-        use_diagnostic_signs = true,
-      },
+    opts = {
+      icons = false,
+      fold_open = "-",
+      fold_closed = "+",
+      use_diagnostic_signs = true,
+    },
     keys = {
       { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
