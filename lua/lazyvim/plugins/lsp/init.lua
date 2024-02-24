@@ -238,6 +238,7 @@ return {
         "rust-analyzer",
         "clangd",
         "ruff-lsp",
+        "cmakelang", -- for cmake_lint
         -- "ruff",
         -- potentially add some rust, c++, python stuff here
       },
