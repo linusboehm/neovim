@@ -59,7 +59,7 @@ return {
           end
         end,
       },
-      context_commentstring = { enable = true, enable_autocmd = false },
+      -- context_commentstring = { enable = true, enable_autocmd = false },
       ensure_installed = {
         "bash",
         "json",
