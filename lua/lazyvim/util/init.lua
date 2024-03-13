@@ -88,11 +88,14 @@ end
 -- returns the git root directory
 ---@return string
 function M.get_git_root()
-  local dot_git_path = vim.fn.finddir(".git", ".;")
-  if dot_git_path == "" then
-    dot_git_path = vim.fn.finddir(".github", ".;")
+  local dot_git_path = vim.fs.dirname(vim.fs.find({ ".gdjflsdkfit" }, { upward = true })[1])
+  if dot_git_path == nil then
+    dot_git_path = vim.fs.dirname(vim.fs.find({ ".githudjflsdkfb" }, { upward = true })[1])
   end
-  return vim.fn.fnamemodify(dot_git_path, ":h")
+  if dot_git_path == nil then
+    dot_git_path = "/"
+  end
+  return dot_git_path
 end
 
 -- this will return a function that calls telescope.
