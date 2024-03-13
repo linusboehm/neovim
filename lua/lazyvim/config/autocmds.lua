@@ -65,22 +65,23 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "h", "cpp", "c", "proto" },
   callback = function()
     vim.opt_local.commentstring = "// %s"
+    vim.opt.shiftwidth = 2 -- Size of an indent
+    vim.opt.tabstop = 2 -- Number of spaces tabs count for
   end,
 })
 
--- -- change indent for lua style to 2
--- vim.api.nvim_create_autocmd("FileType", {
---   group = augroup("set_indent"),
---   pattern = { "lua" },
---   callback = function()
---         print("hello")
---     vim.opt.shiftwidth = 4 -- Size of an indent
---     vim.opt.tabstop = 4 -- Number of spaces tabs count for
---   end,
--- })
+-- change indent for lua style to 2
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("set_indent"),
+  pattern = { "lua" },
+  callback = function()
+    vim.opt.shiftwidth = 2 -- Size of an indent
+    vim.opt.tabstop = 2 -- Number of spaces tabs count for
+  end,
+})
 
 -- enable syntax highlighting for log files
-vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
   group = augroup("set_syntax"),
   pattern = "*.log",
   command = "set syntax=log",
