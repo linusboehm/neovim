@@ -13,6 +13,8 @@ Neovim config based on [LazyVim](https://github.com/LazyVim/LazyVim)
 - Git >= **2.19.0** (for partial clones support)
 - [lazygit](https://github.com/jesseduffield/lazygit#installation)
 - npm
+    * [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
+    * then: `nvm install node`
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [Nerd Font](https://www.nerdfonts.com/)
 
