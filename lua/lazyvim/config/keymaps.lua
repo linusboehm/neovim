@@ -211,10 +211,6 @@ local function dump(o)
    end
 end
 
-map("n", "<leader>gyu", function ()
-  -- test something here
-end, { desc = "test something" })
-
 local function run_last_cmd(orig_win)
   -- run cmd and go back to original window (enter insert mode, clear prompt run last)
   local cmd = [[<esc>i<C-e><C-u><Up><CR><Cmd>]] .. orig_win .. [[ wincmd w<CR>]]

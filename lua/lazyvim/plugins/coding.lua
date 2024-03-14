@@ -222,8 +222,7 @@ return {
     end,
   },
 
-
-    -- comments
+  -- comments
   {
     "JoosepAlviste/nvim-ts-context-commentstring",
     lazy = true,
@@ -240,25 +239,25 @@ return {
           return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
         end,
       },
+
+      -- Module mappings. Use `''` (empty string) to disable one.
+      mappings = {
+        -- Toggle comment (like `gcip` - comment inner paragraph) for both
+        -- Normal and Visual modes
+        comment = "<leader>co",
+
+        -- Toggle comment on current line
+        comment_line = "<leader>cc",
+
+        -- Toggle comment on visual selection
+        comment_visual = "<leader>cc",
+
+        -- Define 'comment' textobject (like `dgc` - delete whole comment block)
+        -- Works also in Visual mode if mapping differs from `comment_visual`
+        textobject = "<leader>cc",
+      },
     },
   },
-
-  -- -- comments
-  -- { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
-  -- {
-  --   "echasnovski/mini.comment",
-  --   event = "VeryLazy",
-  --   opts = {
-  --     hooks = {
-  --       pre = function()
-  --         require("ts_context_commentstring.internal").update_commentstring({})
-  --       end,
-  --     },
-  --   },
-  --   config = function(_, opts)
-  --     require("mini.comment").setup(opts)
-  --   end,
-  -- },
 
   -- better text-objects
   {

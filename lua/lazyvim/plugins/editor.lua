@@ -105,7 +105,7 @@ return {
       -- { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
       -- git
       { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
+      -- { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
       -- search
       { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
       -- { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
@@ -238,7 +238,7 @@ return {
     keys = {
       { "s", mode = { "n", "x", "o" }, desc = "Leap forward to" },
       { "S", mode = { "n", "x", "o" }, desc = "Leap backward to" },
-      { "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
+      -- { "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
     },
     config = function(_, opts)
       local leap = require("leap")
@@ -267,8 +267,8 @@ return {
         ["<leader>b"] = { name = "+buffer" },
         ["<leader>c"] = { name = "+code" },
         ["<leader>f"] = { name = "+file/find" },
-        ["<leader>g"] = { name = "+git" },
         ["<leader>gh"] = { name = "+hunks" },
+        ["<leader>g"] = { name = "+git" },
         ["<leader>q"] = { name = "+quit/session" },
         ["<leader>s"] = { name = "+search" },
         ["<leader>u"] = { name = "+ui" },

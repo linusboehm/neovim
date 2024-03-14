@@ -14,9 +14,11 @@ function M.get()
     M._keys =  {
       { "<leader>cd", vim.diagnostic.open_float, desc = "Line Diagnostics" },
       { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
+      { "gc", "<cmd>Telescope lsp_incoming_calls<cr>", desc = "Goto incoming calls" },
       { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Goto Definition", has = "definition" },
       { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
       { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
+      { "gh", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch source/header" },
       { "gI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation" },
       { "gy", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto T[y]pe Definition" },
       { "K", vim.lsp.buf.hover, desc = "Hover" },
@@ -28,8 +30,8 @@ function M.get()
       { "[e", M.diagnostic_goto(false, "ERROR"), desc = "Prev Error" },
       { "]w", M.diagnostic_goto(true, "WARN"), desc = "Next Warning" },
       { "[w", M.diagnostic_goto(false, "WARN"), desc = "Prev Warning" },
-      { "<leader>cf", format, desc = "Format Document", mode = {"n", "v"}, has = "documentFormatting" },
-      -- { "<leader>cf", format, desc = "Format Range", mode = "v", has = "documentRangeFormatting" },
+      { "<leader>cf", format, desc = "Format Document", has = "documentFormatting" },
+      { "<leader>cf", format, desc = "Format Range", mode = "v", has = "documentRangeFormatting" },
       { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
       {
         "<leader>cA",
