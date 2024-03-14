@@ -120,10 +120,10 @@ map({ "i" }, "j;jw", "<cmd>w<cr><esc>", { desc = "Save file" })
 -- map("n", "<Leader>bw", "<esc>:w<CR>", { desc = "Save file" })
 
 -- remap colon to semicolon in norman and visual mode, but not in insert mode
-map("n", ";", ":", { desc = "semicolon -> colon" })
-map("n", ":", ";", { desc = "colon -> semicolon" })
-map("v", ";", ":", { desc = "semicolon -> colon" })
-map("v", ":", ";", { desc = "colon -> semicolon" })
+map("n", ";", ":", { desc = "semicolon -> colon", noremap = true, silent = false })
+map("n", ":", ";", { desc = "colon -> semicolon", noremap = true, silent = false })
+map("v", ";", ":", { desc = "semicolon -> colon", noremap = true, silent = false })
+map("v", ":", ";", { desc = "colon -> semicolon", noremap = true, silent = false })
 
 -- -- better indenting
 -- map("v", "<", "<gv")

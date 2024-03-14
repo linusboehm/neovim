@@ -28,8 +28,8 @@ function M.get()
       { "[e", M.diagnostic_goto(false, "ERROR"), desc = "Prev Error" },
       { "]w", M.diagnostic_goto(true, "WARN"), desc = "Next Warning" },
       { "[w", M.diagnostic_goto(false, "WARN"), desc = "Prev Warning" },
-      { "<leader>cf", format, desc = "Format Document", has = "documentFormatting" },
-      { "<leader>cf", format, desc = "Format Range", mode = "v", has = "documentRangeFormatting" },
+      { "<leader>cf", format, desc = "Format Document", mode = {"n", "v"}, has = "documentFormatting" },
+      -- { "<leader>cf", format, desc = "Format Range", mode = "v", has = "documentRangeFormatting" },
       { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
       {
         "<leader>cA",
@@ -65,7 +65,6 @@ function M.get()
   return M._keys
 end
 
-
 ---@param method string
 function M.has(buffer, method)
   method = method:find("/") and method or "textDocument/" .. method
@@ -77,7 +76,6 @@ function M.has(buffer, method)
   end
   return false
 end
-
 
 ---@return (LazyKeys|{has?:string})[]
 function M.resolve(buffer)
@@ -95,7 +93,6 @@ function M.resolve(buffer)
   return Keys.resolve(spec)
 end
 
-
 function M.on_attach(_, buffer)
   local Keys = require("lazy.core.handler.keys")
   local keymaps = M.resolve(buffer)
@@ -110,7 +107,6 @@ function M.on_attach(_, buffer)
     end
   end
 end
-
 
 function M.diagnostic_goto(next, severity)
   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev

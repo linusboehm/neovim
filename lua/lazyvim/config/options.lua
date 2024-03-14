@@ -50,6 +50,9 @@ opt.wrap = false -- Disable line wrap
 opt.colorcolumn = "100"
 vim.g.tmux_navigator_no_wrap = 1
 
+-- avoid "write partial file message" when saving in visual mode
+vim.cmd("cabbrev <expr> w getcmdtype()==':' && getcmdline() == \"'<,'>w\" ? '<c-u>w' : 'w'")
+
 if vim.fn.has("nvim-0.9.0") == 1 then
   opt.splitkeep = "screen"
   opt.shortmess:append({ C = true })
