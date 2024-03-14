@@ -88,9 +88,9 @@ end
 -- returns the git root directory
 ---@return string
 function M.get_git_root()
-  local dot_git_path = vim.fs.dirname(vim.fs.find({ ".gdjflsdkfit" }, { upward = true })[1])
+  local dot_git_path = vim.fs.dirname(vim.fs.find({ ".git" }, { upward = true })[1])
   if dot_git_path == nil then
-    dot_git_path = vim.fs.dirname(vim.fs.find({ ".githudjflsdkfb" }, { upward = true })[1])
+    dot_git_path = vim.fs.dirname(vim.fs.find({ ".github" }, { upward = true })[1])
   end
   if dot_git_path == nil then
     dot_git_path = "/"
