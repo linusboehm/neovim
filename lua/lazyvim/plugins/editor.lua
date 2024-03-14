@@ -182,6 +182,7 @@ return {
         path_display = { "smart" }, -- other options are "shorten" and "truncate"
         -- prompt_prefix = " ",
         -- selection_caret = " ",
+        file_ignore_patterns = { "vendor", "third_party", "venv" },
         mappings = {
           i = {
             ["<c-t>"] = function(...)
