@@ -98,6 +98,28 @@ function M.get_git_root()
   return dot_git_path
 end
 
+function M.format_table(t, indent)
+  indent = indent or ""
+  if t == nil then
+    return ""
+  end
+  if indent == "     " then
+    return "abort"
+  end
+  for key, value in pairs(t) do
+    if type(value) == "table" then
+      print(indent .. tostring(key) .. ": ")
+      M.format_table(value, indent .. " ")
+    else
+      print(indent .. tostring(key) .. ": " .. tostring(value))
+    end
+  end
+end
+
+function M.print_table(t)
+  vim.print(M.format_table(t))
+end
+
 -- this will return a function that calls telescope.
 -- cwd will default to lazyvim.util.get_root
 -- for `files`, git_files or find_files will be chosen depending on .git
