@@ -51,12 +51,19 @@ map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 map("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 
+
+-- map("n", "<leader>gyu", function()
+--   -- test something here
+--   vim.print("hello")
+-- end, { desc = "test something" })
+
 -- printing
 -- map("n", "<leader>pf", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 map("n", "<leader>pf", function()
   local path = vim.api.nvim_buf_get_name(0)
   local git_root = Util.get_git_root()
-  vim.fn.setreg('+', path)
+  local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  vim.fn.setreg("+", path .. ":" .. row)
   path = path:gsub(git_root .. "/", "")
   CoreUtil.info(path, { title = "current file name" })
 end, { desc = "print current filename" })
