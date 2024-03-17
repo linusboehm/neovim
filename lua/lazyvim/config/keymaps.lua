@@ -37,11 +37,13 @@ map("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { desc = "window right" })
 map("n", "<C-j>", "<cmd> TmuxNavigateDown<CR>", { desc = "window down" })
 map("n", "<C-k>", "<cmd> TmuxNavigateUp<CR>", { desc = "window Up" })
 
+map("n", "E", "$") -- go to end
+
 -- Resize window using <ctrl> arrow keys
-map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
-map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
-map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
-map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+map("n", "<C-Up>", "<cmd>resize +10<cr>", { desc = "Increase window height" })
+map("n", "<C-Down>", "<cmd>resize -10<cr>", { desc = "Decrease window height" })
+map("n", "<C-Left>", "<cmd>vertical resize -10<cr>", { desc = "Decrease window width" })
+map("n", "<C-Right>", "<cmd>vertical resize +10<cr>", { desc = "Increase window width" })
 
 -- Move Lines
 map("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move down" })
@@ -50,7 +52,6 @@ map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
 map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 map("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
-
 
 -- map("n", "<leader>gyu", function()
 --   -- test something here
@@ -77,19 +78,21 @@ map("x", "K", ":move '<-2<CR>gv-gv", { desc = "move text down" })
 if Util.has("bufferline.nvim") then
   map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
   map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
-  map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
-  map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+  -- map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
+  -- map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 else
   map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
   map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-  map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
-  map("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
+  -- map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+  -- map("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 end
+map("n", "<leader>b1", ":bfirst<cr>", { desc = "go to firs buffer" })
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 
 -- Clear search with <esc>
 map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
+map({ "i", "n" }, ",<leader>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
 
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
@@ -185,7 +188,13 @@ map("n", "<leader>wd", "<C-W>c", { desc = "Delete window" })
 map("n", "<leader>w-", "<C-W>s", { desc = "Split window below" })
 map("n", "<leader>w|", "<C-W>v", { desc = "Split window right" })
 map("n", "<leader>-", "<C-W>s", { desc = "Split window below" })
-map("n", "<leader>|", ":bp<CR><C-W>v:bn<CR>", { desc = "Split window right" })
+-- map("n", "<leader>|", ":bp<CR><C-W>v:bn<CR>", { desc = "Split window right" })
+map("n", "<leader>|", "<C-W>v", { desc = "Split window right" })
+map("n", "<leader>wf", "<C-W>|<C-W>_", { desc = "Focus window" })
+map("n", "<leader>wu", "<C-W>=<cmd>resize -10<cr>", { desc = "Unfocus window" })
+
+-- zen-mod
+map("n", "<leader>uz", "<cmd>ZenMode<cr>", {desc = "zen mode"})
 
 -- tabs
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
@@ -270,6 +279,8 @@ function _G.set_terminal_keymaps()
   vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
   vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
   vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+  -- need to enter normal mode before command and re-enter interactive mode after:
+  vim.keymap.set('t', '<C-z>', [[<C-\><C-n><Cmd>ZenMode<CR>i]])
   -- vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts) -- not sure what this is there for
 
   local function file_exists(name)
