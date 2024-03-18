@@ -196,6 +196,15 @@ map("n", "<leader>wu", "<C-W>=<cmd>resize -10<cr>", { desc = "Unfocus window" })
 -- zen-mod
 map("n", "<leader>uz", "<cmd>ZenMode<cr>", {desc = "zen mode"})
 
+-- Neogit
+map("n", "<leader>gn", "<cmd>Neogit<cr>", {desc = "Neogit"})
+
+-- git diffview
+map("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", {desc = "Diffview"})
+
+-- DB stuff
+map("n", "<leader>dt", "<cmd>DBUIToggle<cr>", {desc = "DB"})
+
 -- tabs
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
 map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
