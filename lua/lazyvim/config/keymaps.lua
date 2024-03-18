@@ -205,6 +205,9 @@ map("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", {desc = "Diffview"})
 -- DB stuff
 map("n", "<leader>dt", "<cmd>DBUIToggle<cr>", {desc = "DB"})
 
+-- git-worktree
+map("n", "<Leader>gw", "<CMD>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
+
 -- tabs
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
 map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
