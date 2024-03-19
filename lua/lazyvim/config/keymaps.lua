@@ -201,12 +201,13 @@ map("n", "<leader>gn", "<cmd>Neogit<cr>", {desc = "Neogit"})
 
 -- git diffview
 map("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", {desc = "Diffview"})
+map("n", "<leader>gD", "<cmd>DiffviewClose<cr>", {desc = "Close Diffview"})
 
 -- DB stuff
 map("n", "<leader>dt", "<cmd>DBUIToggle<cr>", {desc = "DB"})
 
 -- git-worktree
-map("n", "<Leader>gw", "<CMD>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
+map("n", "<Leader>gw", "<CMD>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>", {desc = "git worktree"})
 
 -- tabs
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
