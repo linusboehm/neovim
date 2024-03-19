@@ -330,6 +330,8 @@ function _G.set_terminal_keymaps()
       open_file_at_location(relative_path, line_nr, col_nr)
     elseif file_exists(git_path) then
       open_file_at_location(git_path, line_nr, col_nr)
+    elseif file_exists(filename) then
+      open_file_at_location(filename, line_nr, col_nr)
     else
       CoreUtil.warn("unable to find file " .. filename, { title = "Jump to source location" })
     end
