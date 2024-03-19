@@ -165,7 +165,7 @@ return {
             end
           },
           git_diff(is_active),
-          diagnostic(is_active),
+          -- diagnostic(is_active),
         },
         lualine_c = {
           {
@@ -254,8 +254,9 @@ return {
         options = {
           icons_enabled = true,
           theme = "auto",
-          disabled_filetypes = { statusline = { "dashboard", "alpha", "toggleterm" } },
-          ignore_focus = { "neo-tree", "toggleterm" },
+          -- check filetype with `:lua vim.print(vim.bo.filetype)`
+          disabled_filetypes = { statusline = { "aerial", "dashboard", "alpha", "toggleterm" } },
+          ignore_focus = { "neo-tree", "aerial", "toggleterm" },
         },
         sections = section_settings(true),
         inactive_sections = section_settings(false),
