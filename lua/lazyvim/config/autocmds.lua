@@ -150,3 +150,10 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.schedule(db_completion)
   end,
 })
+
+-- enable syntax highlighting for log files
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  group = augroup("set_syntax"),
+  pattern = "*CMake*.txt",
+  command = "set syntax=cmake",
+})
