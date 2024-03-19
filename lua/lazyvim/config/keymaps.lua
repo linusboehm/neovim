@@ -219,7 +219,7 @@ map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
 -- toggleterm
 local Terminal = require("toggleterm.terminal").Terminal
-local htop = Terminal:new( {cmd = "htop", hidden = true, direction = "float"})
+local htop = Terminal:new( {cmd = "LD_LIBRARY_PATH='' htop", hidden = true, direction = "float"})
 local python = Terminal:new( {cmd = "python3", hidden = true, direction = "float" })
 local function htop_toggle() htop:toggle() end
 local function python_toggle() python:toggle() end
