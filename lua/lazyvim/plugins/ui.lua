@@ -346,23 +346,10 @@ return {
       },
       cmdline = {
         format = {
-          -- cmdline = { icon = ">_" },
           search_down = { icon = "" },
           search_up = { icon = "" },
-          -- filter = { icon = "$" },
-          -- lua = { icon = "☾" },
-          -- help = { icon = "?" },
         },
       },
-      -- format = {
-      --   level = {
-      --     icons = {
-      --       error = "✖",
-      --       warn = "‼",
-      --       info = "🛈 ",
-      --     }
-      --   },
-      -- },
       routes = {
         { filter = { event = "msg_show", find = "search hit BOTTOM" }, skip = true },
         { filter = { event = "msg_show", find = "search hit TOP" }, skip = true },
