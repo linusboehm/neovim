@@ -302,9 +302,24 @@ function _G.set_terminal_keymaps()
     return f ~= nil and io.close(f)
   end
 
+  local function IsInList(v, list)
+    for _, entry in ipairs(list) do
+      if v == entry then
+        return true
+      end
+    end
+    return false
+  end
+
   local function open_file_at_location(filename, line_nr, col_nr)
     -- vim.print("trying to open: " .. filename)
+    local skip_types = {"aerial", "neo-tree"}
     vim.api.nvim_command([[wincmd k]])
+    local cnt = 0
+    while IsInList(vim.bo.filetype, skip_types) and cnt < 5 do
+      vim.api.nvim_command([[wincmd l]])
+      cnt = cnt + 1
+    end
     vim.cmd('e' .. filename)
     vim.api.nvim_win_set_cursor(0, {tonumber(line_nr), tonumber(col_nr) - 1})
   end

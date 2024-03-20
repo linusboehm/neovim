@@ -80,7 +80,7 @@ return {
       build = "make",
       config = function()
         require("telescope").load_extension("fzf")
-        require('telescope').load_extension('git_worktree')
+        require("telescope").load_extension("git_worktree")
       end,
     },
   },
@@ -170,8 +170,8 @@ return {
     opts = function(_, opts)
       -- add tsx and treesitter
       vim.list_extend(opts.ensure_installed, {
-          "tsx",
-          "typescript",
+        "tsx",
+        "typescript",
       })
     end,
   },
@@ -267,4 +267,3 @@ return {
     end,
   },
 }
-
