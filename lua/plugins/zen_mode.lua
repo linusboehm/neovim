@@ -43,13 +43,13 @@ return {
         local maxHeight = vim.o.lines - 5
         vim.api.nvim_win_set_width(win, maxWidth)
         vim.api.nvim_win_set_height(win, maxHeight)
-        vim.api.nvim_command("colorscheme terafox")
+        -- vim.api.nvim_command("colorscheme terafox")
       end
       -- vim.cmd("AerialOpen")
     end,
     -- callback where you can add custom code when the Zen window closes
-    on_close = function()
-      vim.api.nvim_command("colorscheme nightfox")
-    end,
+    -- on_close = function()
+    --   vim.api.nvim_command("colorscheme nightfox")
+    -- end,
   },
 }
